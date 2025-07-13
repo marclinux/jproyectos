@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="utf-8">
+    <title > Actualizar  empleado</title>
+</head>
+
+<body>
+    <form action="#" th:action="@{/empleado/actualizar/{id}(id=${empleado.id})}" th:object="${empleado}" method="post">
+        <label for="name">Name</label>
+        <input type="text" th:field="*{nombre}" id="name" placeholder="nombre">
+        <span th:if="${#fields.hasErrors('nombre')}" th:errors="*{nombre}"></span>
+
+        <label for="apPaterno">Apellido Paterno</label>
+        <input type="text" th:field="*{apPaterno}" id="apPaterno" placeholder="Apellido Paterno">
+        <span th:if="${#fields.hasErrors('apPaterno')}" th:errors="*{apPaterno}"></span>
+
+        <label for="apMaterno">Apellido Materno</label>
+        <input type="text" th:field="*{apMaterno}" id="apMaterno" placeholder="Apellido Materno">
+        <span th:if="${#fields.hasErrors('apMaterno')}" th:errors="*{apMaterno}"></span>
+
+        <label for="edoCivil">RFC</label>
+        <input type="text" th:field="*{RFC}" id="rfc" placeholder="RFC">
+        <span th:if="${#fields.hasErrors('RFC')}" th:errors="*{RFC}"></span>
+
+        <label for="edoCivil">Estado Civil</label>
+        <input type="text" th:field="*{estadoCivil}" id="edocivil" placeholder="Estado Civil">
+        <span th:if="${#fields.hasErrors('estadoCivil')}" th:errors="*{estadoCivil}"></span>
+
+        <label for="sexo">Sexo</label>
+        <input type="text" th:field="*{sexo}" id="sexo" placeholder="Sexo">
+        <span th:if="${#fields.hasErrors('sexo')}" th:errors="*{sexo}"></span>
+
+        <input type="submit" value="Actualizar">
+    </form>
+</body>
+
+</html>

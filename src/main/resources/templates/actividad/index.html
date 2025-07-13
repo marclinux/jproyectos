@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title> Listado de Actividades</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css"
+        integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
+</head>
+
+<body>
+    <div class="container text-justify">
+
+        <!-- ENCABEZADO DE LA PÁGINA menu-->
+        <div th:replace="header :: header">...</div>
+
+
+        <div th:switch="${actividades}">
+            <h2 th:case="null">No hay actividades registrados</h2>
+            <div th:case="*">
+                <h2>Lista de Actividades</h2>
+                <table class="table table-striped ">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th scope="col">Historia</th>
+                            <th scope="col"> Descripción</th>
+                            <th scope="col">Fecha Inicio</th>
+                            <th scope="col">Hora Inicio</th>
+                            <th scope="col"> Fecha Fin</th>
+                            <th scope="col">Hora Inicio</th>
+                            <th scope="col">Interrupción</th>
+                            <th scope="col"> Etapa</th>
+                            <th scope="col"> Artefactos</th>
+
+                            <th scope="col">Operación</th>
+                            <th scope="col">Operación</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="actividad : ${actividades}">
+                            <td th:text="${actividad.history}!=null? ${actividad.history.id}:''"></td>
+                            <td th:text="${actividad.descripcion}"></td>
+                            <td th:text="${#dates.format(actividad.fechaInicio, 'dd/MM/yyyy')}"></td>
+                            <td th:text="${actividad.horaInicio}"></td>
+                            <td th:text="${#dates.format(actividad.fechaFinal, 'dd/MM/yyyy')}"></td>
+                            <td th:text="${actividad.horaFinal}"></td>
+                            <td th:text="${actividad.interrupcion}"></td>
+                            <td th:switch="${actividad.etapa}">
+                                <span th:case="'1'">Planeación</span>
+                                <span th:case="'2'">Diseño</span>
+                                <span th:case="'3'">Revisión de Diseño</span>
+                                <span th:case="'4'">Codificación</span>
+                                <span th:case="'5'">Revisión de Codificación</span>
+                                <span th:case="'6'">Compilación</span>
+                                <span th:case="'7'">Pruebas Unitarias</span>
+                                <span th:case="'8'">postmortem</span>
+                            </td>
+                            <td th:text="${actividad.artefactos}"></td>
+                            <td><a class="btn btn-warning"
+                                    th:href="@{modificar/{id}(id=${actividad.id})}">Actualizar</a></td>
+                            <td><a class="btn btn-danger" th:href="@{eliminar/{id}(id=${actividad.id})}">Eliminar</a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <p><a class="btn btn-success" href="/scrum/actividades/registrar">Registrar</a>
+                <a class="btn btn-secondary" href="index">Regresar</a>
+            </p>
+        </div>
+
+        <!-- PIE DE LA PÁGINA COPY-->
+        <div th:replace="footer :: copy">...</div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"
+        integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-Fy6S3B9q64WdZWQUiU+q4/2Lc9npb8tCaSX9FK7E8HnRr0Jz8D6OP9dO5Vg3Q9ct"
+        crossorigin="anonymous"></script>
+
+</body>
+
+</html>

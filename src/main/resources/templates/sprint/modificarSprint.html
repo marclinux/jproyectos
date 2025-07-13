@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="utf-8">
+    <title> Actualizar Sprint</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css"
+        integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
+</head>
+
+<body>
+    <div class="container text-justify">
+        <h1>Actualización del Sprint</h1>
+        <form action="#" th:action="@{/scrum/sprints/actualizar/{id}(id=${sprint.id})}" th:object="${sprint}" method="post">
+            <div class="form-group">
+                <label for="name">Name</label>
+                <input type="text" th:field="*{nombre}" id="name" placeholder="nombre" class="form-control">
+                <span th:if="${#fields.hasErrors('nombre')}" th:errors="*{nombre}"></span>
+            </div>
+            <div class="form-group">
+                <label for="descripcion">Descripción</label>
+                <input type="text" th:field="*{descripcion}" id="descripcion" placeholder="Descripción del Proyecto"
+                    class="form-control">
+                <span th:if="${#fields.hasErrors('descripcion')}" th:errors="*{descripcion}"></span>
+            </div>
+            <div class="form-group">
+                <label for="fechaInicio">Fecha de Inicio</label>
+                <input type="date" th:field="*{fechaInicio}" id="fechaInicio" class="form-control" />
+                <span th:if="${#fields.hasErrors('fechaInicio')}" th:errors="*{fechaInicio}"></span>
+            </div>
+            <div class="form-group">
+                <label for="fechaFinal">Fecha de Término</label>
+                <input type="date" th:field="*{fechaFinal}" id="fechaFinal" class="form-control" />
+                <span th:if="${#fields.hasErrors('fechaFinal')}" th:errors="*{fechaFinal}"></span>
+            </div>
+            <div class="form-group">
+                <label for="duracion">Duración</label>
+                <input type="text" th:field="*{dias}" id="rfc" placeholder="Duración en días" class="form-control">
+                <span th:if="${#fields.hasErrors('dias')}" th:errors="*{dias}"></span>
+            </div>
+
+            <div class="form-group">
+                <label for="estatus">Estado del Proyecto</label>
+                <input type="text" th:field="*{estado}" id="estatus" placeholder="Estado del Proyecto"
+                    class="form-control">
+                <span th:if="${#fields.hasErrors('estado')}" th:errors="*{estado}"></span>
+            </div>
+            <input class="btn btn-primary" type="submit" value="Actualizar">
+            <a class="btn btn-secondary" href="../index">Cancelar</a>
+        </form>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"
+        integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-Fy6S3B9q64WdZWQUiU+q4/2Lc9npb8tCaSX9FK7E8HnRr0Jz8D6OP9dO5Vg3Q9ct"
+        crossorigin="anonymous"></script>
+</body>
+
+</html>
