@@ -1,5 +1,12 @@
 package com.example.demo.controller.actividad;
 
+import java.time.Duration;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
+
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,6 +62,7 @@ public class ActividadController {
         e.setHistory(h);
         ActividadService.createActividad(e);
       }
+      
       
       return "redirect:/scrum/actividades/index";
     }

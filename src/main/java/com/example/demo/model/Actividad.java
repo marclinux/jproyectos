@@ -27,6 +27,7 @@ public class Actividad {
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date fechaFinal;
     private String horaFinal;
+    private Double horasTotales;
     /* La interrupcion en formato horas:minutos */
     private String interrupcion;    
     /* 1: Planeación, 2:Diseño, 3:Revisión de Diseño
@@ -121,6 +122,7 @@ public class Actividad {
     public void setHoraFinal(String horaFinal) {
         this.horaFinal = horaFinal;
     }
+    
 
 
     public String getInterrupcion() {
@@ -171,6 +173,16 @@ public class Actividad {
     public void setHistory(Historia history) {
         this.history = history;
     }
+
+
+	public Double getHorasTotales() {
+		return horasTotales;
+	}
+
+
+	public void setHorasTotales(Double horasTotales) {
+		this.horasTotales = horasTotales;
+	}
 
     
 }

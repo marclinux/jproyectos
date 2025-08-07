@@ -1,49 +1,69 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
 
 <head>
-    <meta charset="utf-8">
-    <title> Registrar empleados</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
+  <meta charset="utf-8">
+  <title>Registrar empleados</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script src="https://cdn.tailwindcss.com"></script>
 </head>
 
-<body>
-    <form action="#" th:action="@{/empleado/addFrom}" th:object="${empleado}" method="post">
-        <div class="form-group">
-            <label for="name">Name</label>
-            <input type="text" th:field="*{nombre}" id="name" placeholder="nombre" class="form-control">
-            <span th:if="${#fields.hasErrors('nombre')}" th:errors="*{nombre}"></span>
-        </div>
-        <div class="form-group">
-        <label for="apPaterno">Apellido Paterno</label>
-        <input type="text" th:field="*{apPaterno}" id="apPaterno" placeholder="Apellido Paterno" class="form-control">
-        <span th:if="${#fields.hasErrors('apPaterno')}" th:errors="*{apPaterno}"></span>
-    </div>
-    <div class="form-group">
-        <label for="apMaterno">Apellido Materno</label>
-        <input type="text" th:field="*{apMaterno}" id="apMaterno" placeholder="Apellido Materno" class="form-control">
-        <span th:if="${#fields.hasErrors('apMaterno')}" th:errors="*{apMaterno}"></span>
-    </div>
-        <div class="form-group">
-        <label for="edoCivil">RFC</label>
-        <input type="text" th:field="*{RFC}" id="rfc" placeholder="RFC" class="form-control">
-        <span th:if="${#fields.hasErrors('RFC')}" th:errors="*{RFC}"></span>
-    </div>
+<body class="bg-gray-100 text-gray-800">
 
-    <div class="form-group">
-        <label for="edoCivil">Estado Civil</label>
-        <input type="text" th:field="*{estadoCivil}" id="edocivil" placeholder="Estado Civil" class="form-control">
-        <span th:if="${#fields.hasErrors('estadoCivil')}" th:errors="*{estadoCivil}"></span>
-    </div>
-    <div class="form-group">
-        <label for="sexo">Sexo</label>
-        <input type="text" th:field="*{sexo}" id="sexo" placeholder="Sexo" class="form-control">
-        <span th:if="${#fields.hasErrors('sexo')}" th:errors="*{sexo}"></span>
-    </div>
-        <input class="btn btn-primary" type="submit" value="Registrar">
+  <div class="max-w-2xl mx-auto mt-10 bg-white shadow-md rounded-lg p-6">
+    <h2 class="text-2xl font-bold mb-6 text-center text-gray-800">Registrar Empleado</h2>
+
+    <form action="#" th:action="@{/empleado/addFrom}" th:object="${empleado}" method="post" class="space-y-4">
+
+      <div>
+        <label for="name" class="block text-sm font-medium">Nombre</label>
+        <input type="text" th:field="*{nombre}" id="name" placeholder="Nombre"
+               class="mt-1 w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
+        <span th:if="${#fields.hasErrors('nombre')}" th:errors="*{nombre}" class="text-red-500 text-sm"></span>
+      </div>
+
+      <div>
+        <label for="apPaterno" class="block text-sm font-medium">Apellido Paterno</label>
+        <input type="text" th:field="*{apPaterno}" id="apPaterno" placeholder="Apellido Paterno"
+               class="mt-1 w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
+        <span th:if="${#fields.hasErrors('apPaterno')}" th:errors="*{apPaterno}" class="text-red-500 text-sm"></span>
+      </div>
+
+      <div>
+        <label for="apMaterno" class="block text-sm font-medium">Apellido Materno</label>
+        <input type="text" th:field="*{apMaterno}" id="apMaterno" placeholder="Apellido Materno"
+               class="mt-1 w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
+        <span th:if="${#fields.hasErrors('apMaterno')}" th:errors="*{apMaterno}" class="text-red-500 text-sm"></span>
+      </div>
+
+      <div>
+        <label for="rfc" class="block text-sm font-medium">RFC</label>
+        <input type="text" th:field="*{RFC}" id="rfc" placeholder="RFC"
+               class="mt-1 w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
+        <span th:if="${#fields.hasErrors('RFC')}" th:errors="*{RFC}" class="text-red-500 text-sm"></span>
+      </div>
+
+      <div>
+        <label for="edocivil" class="block text-sm font-medium">Estado Civil</label>
+        <input type="text" th:field="*{estadoCivil}" id="edocivil" placeholder="Estado Civil"
+               class="mt-1 w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
+        <span th:if="${#fields.hasErrors('estadoCivil')}" th:errors="*{estadoCivil}" class="text-red-500 text-sm"></span>
+      </div>
+
+      <div>
+        <label for="sexo" class="block text-sm font-medium">Sexo</label>
+        <input type="text" th:field="*{sexo}" id="sexo" placeholder="Sexo"
+               class="mt-1 w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
+        <span th:if="${#fields.hasErrors('sexo')}" th:errors="*{sexo}" class="text-red-500 text-sm"></span>
+      </div>
+
+      <div class="text-center mt-6">
+        <input type="submit" value="Registrar"
+               class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-6 rounded cursor-pointer">
+      </div>
     </form>
-    <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-Fy6S3B9q64WdZWQUiU+q4/2Lc9npb8tCaSX9FK7E8HnRr0Jz8D6OP9dO5Vg3Q9ct" crossorigin="anonymous"></script>
+  </div>
+
 </body>
 
 </html>

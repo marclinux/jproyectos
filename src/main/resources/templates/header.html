@@ -1,32 +1,48 @@
 <!DOCTYPE html>
-<html>
-
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
-  ...
+  <meta charset="UTF-8">
+  <title>Encabezado Responsivo</title>
+  <script src="https://cdn.tailwindcss.com"></script>
 </head>
-
-<body>
+<body class="m-0 p-0">
   <div th:fragment="header">
-    <ul class="nav nav-tabs">
-      <li class="nav-item dropdown">
-        <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true"
-          aria-expanded="false">Menu</a>
-        <div class="dropdown-menu">
-          <a class="dropdown-item" href="../proyectos/index">proyectos</a>
-          <a class="dropdown-item" href="../historias/index">Historias</a>
-          <a class="dropdown-item" href="../sprints/index">Sprints</a>
-          <a class="dropdown-item" href="../actividades/index">Actividades</a>
-          <div class="dropdown-divider"></div>
-          <a class="dropdown-item" href="../../users">Usuarios</a>
-          <div class="dropdown-divider"></div>
-          <a class="dropdown-item" href="../../logout">Salir</a>
-        </div>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link disabled" href="#">Acerca de</a>
-      </li>
-    </ul>
-  </div>
-</body>
+	<nav class="bg-[#ADD8E6] text-black px-4 py-0.5 w-full fixed top-0 left-0 z-50">
+	  <div class="flex items-center justify-between">
+		
+        <!-- Título -->
+        <span class="text-lg font-semibold">EXPEA</span>
 
+        <!-- Botón ☰ -->
+        <button id="menu-btn" class="md:hidden text-3xl focus:outline-none">
+          ☰
+        </button>
+      
+
+      <!-- Menú de navegación -->
+      <ul id="menu"
+          class="hidden flex-col space-y-2 mt-3
+                 md:flex md:flex-row md:space-y-0 md:space-x-6 md:mt-0 md:justify-end">
+        <li><a href="../proyectos/index" class="hover:underline">Proyectos</a></li>
+        <li><a href="../historias/index" class="hover:underline">Historias</a></li>
+        <li><a href="../sprints/index" class="hover:underline">Sprints</a></li>
+        <li><a href="../actividades/index" class="hover:underline">Actividades</a></li>
+        <li><a href="../../users" class="hover:underline">Usuarios</a></li>
+        <li><a href="../../logout" class="hover:underline text-red-500">Salir</a></li>
+        <li><span class="text-gray-500 cursor-not-allowed">Acerca de</span></li>
+      </ul>
+	  </div>
+    </nav>
+  </div>
+
+  <!-- Script para activar menú en móviles -->
+  <script>
+    const menuBtn = document.getElementById('menu-btn');
+    const menu = document.getElementById('menu');
+
+    menuBtn.addEventListener('click', () => {
+      menu.classList.toggle('hidden');
+    });
+  </script>
+</body>
 </html>

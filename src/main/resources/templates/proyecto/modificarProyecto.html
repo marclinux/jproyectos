@@ -1,37 +1,45 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
 
 <head>
-    <meta charset="utf-8">
-    <title> Actualizar Proyecto</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css"
-        integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
+  <meta charset="utf-8">
+  <title>Actualizar Proyecto</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script src="https://cdn.tailwindcss.com"></script>
 </head>
 
-<body>
-    <div class="container text-center">
-        <form action="#" th:action="@{/scrum/proyectos/actualizar/{id}(id=${proyecto.id})}" th:object="${proyecto}"
-            method="post">
-            <div class="form-group">
-                <label for="nombre">Proyecto</label>
-                <input type="text" th:field="*{nombre}" id="nombre" placeholder="nombre" class="form-control">
-                <span th:if="${#fields.hasErrors('nombre')}" th:errors="*{nombre}"></span>
-            </div>
-            <div class="form-group">
-                <input type="checkbox" class="form-control form-check-input" th:field="*{estaActivo}" id="estaActivo"
-                    placeholder="Esta Activo">
-                <label class="form-check-label" for="estaActivo">Proyecto Activo</label>
-            </div>
-            <input class="btn btn-primary" type="submit" value="Actualizar">
-            <a class="btn btn-secondary" href="../index">Cancelar</a>
-        </form>
-    </div>
-    <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"
-        integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
-        crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-Fy6S3B9q64WdZWQUiU+q4/2Lc9npb8tCaSX9FK7E8HnRr0Jz8D6OP9dO5Vg3Q9ct"
-        crossorigin="anonymous"></script>
+<body class="bg-gray-100 text-gray-800">
+
+  <div class="max-w-md mx-auto mt-10 bg-white p-8 rounded-lg shadow-md">
+    <h1 class="text-2xl font-bold text-center mb-6">Actualizar Proyecto</h1>
+
+    <form action="#" th:action="@{/scrum/proyectos/actualizar/{id}(id=${proyecto.id})}" th:object="${proyecto}" method="post" class="space-y-6">
+
+      <!-- Campo Nombre -->
+      <div>
+        <label for="nombre" class="block text-sm font-medium">Nombre del Proyecto</label>
+        <input type="text" id="nombre" th:field="*{nombre}" placeholder="Nombre"
+          class="mt-1 w-full border border-gray-300 rounded-md px-3 py-2 shadow-sm focus:ring-blue-500 focus:border-blue-500" />
+        <span class="text-sm text-red-600" th:if="${#fields.hasErrors('nombre')}" th:errors="*{nombre}"></span>
+      </div>
+
+      <!-- Campo Proyecto Activo -->
+      <div class="flex items-center space-x-3">
+        <input type="checkbox" id="estaActivo" th:field="*{estaActivo}"
+          class="h-5 w-5 text-blue-600 border-gray-300 rounded focus:ring-blue-500">
+        <label for="estaActivo" class="text-sm font-medium">Proyecto Activo</label>
+      </div>
+
+      <!-- Botones -->
+      <div class="flex justify-between">
+        <input type="submit" value="Actualizar"
+          class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 cursor-pointer">
+        <a href="../index" class="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600">Cancelar</a>
+      </div>
+
+    </form>
+  </div>
+
 </body>
 
 </html>

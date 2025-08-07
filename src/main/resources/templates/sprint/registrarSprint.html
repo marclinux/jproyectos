@@ -2,91 +2,94 @@
 <html xmlns:th="http://www.thymeleaf.org">
 
 <head>
-    <meta charset="utf-8">
-    <title> Registrar sprint</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css"
-        integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
+  <meta charset="utf-8" />
+  <title>Registrar Sprint</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <script src="https://cdn.tailwindcss.com"></script>
 </head>
 
-<body>
-    <div class="container text-justify">
-        <form action="#" th:action="@{/scrum/sprints/registrar}" th:object="${sprint}" method="post">
-            <div class="form-group">
-                <label for="name">Name</label>
-                <input type="text" th:field="*{nombre}" id="name" placeholder="nombre" class="form-control">
-                <span th:errors="*{nombre}"></span>
-            </div>
-            <div class="form-group">
-                <label for="descripcion">Descripción</label>
-                <input type="text" th:field="*{descripcion}" id="descripcion" placeholder="Descripción del Sprint"
-                    class="form-control">
-                <span th:if="${#fields.hasErrors('descripcion')}" th:errors="*{descripcion}"></span>
-            </div>
-            <div class="form-group">
-                <label for="fechaInicio">Fecha de Inicio</label>
-                <input type="date" th:field="*{fechaInicio}" id="fechaInicio" class="form-control" />
-                <span th:if="${#fields.hasErrors('fechaInicio')}" th:errors="*{fechaInicio}"></span>
-            </div>
-            <div class="form-group">
-                <label for="fechaFinal">Fecha de Término</label>
-                <input type="date" th:field="*{fechaFinal}" id="fechaFinal" class="form-control"
-                    onchange="calcular()" />
-                <span th:if="${#fields.hasErrors('fechaFinal')}" th:errors="*{fechaFinal}"></span>
-                <span th:if="${errorMessage}" th:text="${errorMessage}" id="spanError">ERROR</span>
-            </div>
-            <div class="form-group">
-                <label for="duracion">Duración</label>
-                <input type="text" th:field="*{dias}" id="duracion" placeholder="Duración en días"
-                    class="form-control  ">
-                <span th:if="${#fields.hasErrors('dias')}" th:errors="*{dias}"></span>
-            </div>
+<body class="bg-gray-100 text-gray-900">
 
-            <div class="form-group">
-                <label for="estatus">Estado del Proyecto</label>
-                <input type="text" th:field="*{estado}" id="estatus" placeholder="Estado del Proyecto"
-                    class="form-control">
-                <span th:if="${#fields.hasErrors('estado')}" th:errors="*{estado}"></span>
-            </div>
-            <input class="btn btn-primary" type="submit" value="Registrar">
-            <a class="btn btn-secondary" href="index">Cancelar</a>
-        </form>
-    </div>
-    <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"
-        integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
-        crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-Fy6S3B9q64WdZWQUiU+q4/2Lc9npb8tCaSX9FK7E8HnRr0Jz8D6OP9dO5Vg3Q9ct"
-        crossorigin="anonymous"></script>
+  <div class="max-w-3xl mx-auto px-4 py-8">
+    <h1 class="text-3xl font-bold mb-6 text-center">Registrar Sprint</h1>
 
-    <script>
-        function calculardiasDiscount() {
-            var fechaini = new Date(document.getElementById('fechaInicio').value);
-            var fechafin = new Date(document.getElementById('fechaFinal').value);
-            var diasdif = fechafin.getTime() - fechaini.getTime();
-            var contdias = Math.round(diasdif / (1000 * 60 * 60 * 24));
-            alert(contdias);
-        }
+    <form action="#" th:action="@{/scrum/sprints/registrar}" th:object="${sprint}" method="post"
+      class="bg-white p-6 rounded-lg shadow-md space-y-6">
 
-        function calcular() {
-            var timeStart = new Date(document.getElementById("fechaInicio").value);
-            var timeEnd = new Date(document.getElementById("fechaFinal").value);
-            document.getElementById("duracion").value = 0;
-            if (timeEnd > timeStart) {
-                var diff = timeEnd.getTime() - timeStart.getTime();
-                document.getElementById("duracion").value = Math.round(diff / (1000 * 60 * 60 * 24));
-            } else if (timeEnd != null && timeEnd < timeStart) {
-                alert("Verifique las fechas");
-            }
-        }
+      <div>
+        <label for="name" class="block text-sm font-medium">Nombre</label>
+        <input type="text" th:field="*{nombre}" id="name" placeholder="nombre"
+          class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500" />
+        <span th:errors="*{nombre}" class="text-red-600 text-sm mt-1 block"></span>
+      </div>
 
-        function sumarFecha() {
-            var fecha = new Date(document.getElementById("fechaInicio").value);
-            //var dias = 2; // Número de días a agregar
-            fecha.setDate(fecha.getDate() + 4);
-            document.getElementById("fechaInicio").value = fecha.toDateString;
-            alert(fecha)
-        }
-    </script>
+      <div>
+        <label for="descripcion" class="block text-sm font-medium">Descripción</label>
+        <input type="text" th:field="*{descripcion}" id="descripcion" placeholder="Descripción del Sprint"
+          class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500" />
+        <span th:if="${#fields.hasErrors('descripcion')}" th:errors="*{descripcion}"
+          class="text-red-600 text-sm mt-1 block"></span>
+      </div>
+
+      <div>
+        <label for="fechaInicio" class="block text-sm font-medium">Fecha de Inicio</label>
+        <input type="date" th:field="*{fechaInicio}" id="fechaInicio"
+          class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500" />
+        <span th:if="${#fields.hasErrors('fechaInicio')}" th:errors="*{fechaInicio}"
+          class="text-red-600 text-sm mt-1 block"></span>
+      </div>
+
+      <div>
+        <label for="fechaFinal" class="block text-sm font-medium">Fecha de Término</label>
+        <input type="date" th:field="*{fechaFinal}" id="fechaFinal" onchange="calcular()"
+          class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500" />
+        <span th:if="${#fields.hasErrors('fechaFinal')}" th:errors="*{fechaFinal}"
+          class="text-red-600 text-sm mt-1 block"></span>
+        <span th:if="${errorMessage}" th:text="${errorMessage}" id="spanError"
+          class="text-red-600 text-sm block mt-1"></span>
+      </div>
+
+      <div>
+        <label for="duracion" class="block text-sm font-medium">Duración</label>
+        <input type="text" th:field="*{dias}" id="duracion" placeholder="Duración en días"
+          class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500" />
+        <span th:if="${#fields.hasErrors('dias')}" th:errors="*{dias}"
+          class="text-red-600 text-sm mt-1 block"></span>
+      </div>
+
+      <div>
+        <label for="estatus" class="block text-sm font-medium">Estado del Proyecto</label>
+        <input type="text" th:field="*{estado}" id="estatus" placeholder="Estado del Proyecto"
+          class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500" />
+        <span th:if="${#fields.hasErrors('estado')}" th:errors="*{estado}"
+          class="text-red-600 text-sm mt-1 block"></span>
+      </div>
+
+      <div class="flex justify-between mt-6">
+        <input type="submit" value="Registrar"
+          class="bg-green-600 hover:bg-green-700 text-white font-semibold px-4 py-2 rounded cursor-pointer" />
+        <a href="index"
+          class="bg-gray-600 hover:bg-gray-700 text-white font-semibold px-4 py-2 rounded">Cancelar</a>
+      </div>
+
+    </form>
+  </div>
+
+  <script>
+    function calcular() {
+      var timeStart = new Date(document.getElementById("fechaInicio").value);
+      var timeEnd = new Date(document.getElementById("fechaFinal").value);
+      document.getElementById("duracion").value = 0;
+
+      if (timeEnd > timeStart) {
+        var diff = timeEnd.getTime() - timeStart.getTime();
+        document.getElementById("duracion").value = Math.round(diff / (1000 * 60 * 60 * 24));
+      } else if (timeEnd && timeStart && timeEnd < timeStart) {
+        alert("Verifique las fechas");
+      }
+    }
+  </script>
+
 </body>
 
 </html>

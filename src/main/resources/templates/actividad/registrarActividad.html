@@ -1,143 +1,151 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
 
 <head>
-    <meta charset="utf-8">
-    <title> Registrar actividad</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css"
-        integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
+  <meta charset="utf-8" />
+  <title>Registrar actividad</title>
+  <script src="https://cdn.tailwindcss.com"></script>
 </head>
 
-<body>
-    <div class="container text-justify">
-        <form action="#" th:action="@{/scrum/actividades/registrar}" th:object="${actividad}" method="post">
-            <div th:switch="${historias}" class="form-group">
-                <h2 th:case="null">Debe registrar Historias</h2>
-                <div th:case="*">
-                    <label for="historia">Historia</label>
-                    <select th:field="*{history.id}" id="historia">
-                        <option th:each="historia : ${historias}" th:value="${historia.id}" th:text="${historia.id}">
-                        </option>
-                    </select>
-                </div>
-                <span th:errors="*{history}"></span>
-            </div>
-            <div class="form-group">
-                <label for="descripcion">Descripción</label>
-                <input type="text" th:field="*{descripcion}" id="descripcion" placeholder="Descripción del Sprint"
-                    class="form-control">
-                <span th:if="${#fields.hasErrors('descripcion')}" th:errors="*{descripcion}"></span>
-            </div>
-            <div class="form-group">
-                <label for="fechaInicio">Fecha de Inicio</label>
-                <input type="date" th:field="*{fechaInicio}" id="fechaInicio" class="form-control" />
-                <span th:if="${#fields.hasErrors('fechaInicio')}" th:errors="*{fechaInicio}"></span>
-            </div>
-            <div class="form-group">
-                <label for="horaInicio">Hora de Inicio</label>
-                <input type="time" th:field="*{horaInicio}" id="horaInicio" placeholder="Hora de Inicio"
-                    class="form-control">
-                <span th:if="${#fields.hasErrors('horaInicio')}" th:errors="*{horaInicio}"></span>
-            </div>
-            <div class="form-group">
-                <label for="fechaFinal">Fecha de Término</label>
-                <input type="date" th:field="*{fechaFinal}" id="fechaFinal" class="form-control"
-                    onchange="calcular()" />
-                <span th:if="${#fields.hasErrors('fechaFinal')}" th:errors="*{fechaFinal}"></span>
-                <span th:if="${errorMessage}" th:text="${errorMessage}" id="spanError">ERROR</span>
-            </div>
-            <div class="form-group">
-                <label for="horaFinal">Hora Final</label>
-                <input type="time" th:field="*{horaFinal}" id="horaFinal" placeholder="Hora Final" class="form-control">
-                <span th:if="${#fields.hasErrors('horaFinal')}" th:errors="*{horaFinal}"></span>
-            </div>
-            <div class="form-group">
-                <label for="interrupcion">Interrupción</label>
-                <input type="text" th:field="*{interrupcion}" id="interrupcion" placeholder="Tiempo de Interrupción"
-                    class="form-control  ">
-                <span th:if="${#fields.hasErrors('interrupcion')}" th:errors="*{interrupcion}"></span>
-            </div>
+<body class="bg-gray-50">
+  <div class="max-w-3xl mx-auto p-6 bg-white rounded shadow mt-8 text-justify">
 
-            <div class="form-group">
-                <label for="etapa">Etapa del Desarrollo</label>
-                <select th:field="*{etapa}">
-                    <option th:value="'1'">Planeación</option>
-                    <option th:value="'2'">Diseño</option>
-                    <option th:value="'3'">Revisión de Diseño</option>
-                    <option th:value="'4'">Codificación</option>
-                    <option th:value="'5'">Revisión de Codificación</option>
-                    <option th:value="'6'">Compilación</option>
-                    <option th:value="'7'">Pruebas Unitarias</option>
-                    <option th:value="'8'">postmortem</option>
-                </select>
-                <!-- <input type="text" th:field="*{etapa}" id="etapa" placeholder="Planeación, Diseño,..." class="form-control">-->
-                <span th:if="${#fields.hasErrors('etapa')}" th:errors="*{etapa}"></span>
-            </div>
+    <form action="#" th:action="@{/scrum/actividades/registrar}" th:object="${actividad}" method="post" class="space-y-6">
 
-            <div class="form-group">
-                <label for="artefactos">Artefactos</label>
-                <input type="text" th:field="*{artefactos}" id="artefactos" placeholder="Entidades, paginas html"
-                    class="form-control">
-                <span th:if="${#fields.hasErrors('artefactos')}" th:errors="*{artefactos}"></span>
-            </div>
-            <input class="btn btn-primary" type="submit" value="Registrar">
-            <a class="btn btn-secondary" href="../index">Cancelar </a>
-        </form>
-    </div>
-    <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"
-        integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
-        crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-Fy6S3B9q64WdZWQUiU+q4/2Lc9npb8tCaSX9FK7E8HnRr0Jz8D6OP9dO5Vg3Q9ct"
-        crossorigin="anonymous"></script>
+      <div th:switch="${historias}">
+        <h2 th:case="null" class="text-red-600 font-semibold">Debe registrar Historias</h2>
 
-    <script>
+        <div th:case="*">
+          <label for="historia" class="block mb-1 font-semibold text-gray-700">Historia</label>
+          <select id="historia" th:field="*{history.id}"
+            class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
+            <option th:each="historia : ${historias}" th:value="${historia.id}" th:text="${historia.id}"></option>
+          </select>
+        </div>
+        <span th:errors="*{history}" class="text-red-600 text-sm"></span>
+      </div>
 
-        window.onload = function () {
-            var fecha = new Date(); //Fecha actual
-            var mes = fecha.getMonth() + 1; //obteniendo mes
-            var dia = fecha.getDate(); //obteniendo dia
-            var ano = fecha.getFullYear(); //obteniendo año
-            if (dia < 10)
-                dia = '0' + dia; //agrega cero si el menor de 10
-            if (mes < 10)
-                mes = '0' + mes //agrega cero si el menor de 10
-            document.getElementById('fechaInicio').value = ano + "-" + mes + "-" + dia;
-            document.getElementById('fechaFinal').value = ano + "-" + mes + "-" + dia;
+      <div>
+        <label for="descripcion" class="block mb-1 font-semibold text-gray-700">Descripción</label>
+        <input type="text" id="descripcion" placeholder="Descripción del Sprint" th:field="*{descripcion}"
+          class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" />
+        <span th:if="${#fields.hasErrors('descripcion')}" th:errors="*{descripcion}" class="text-red-600 text-sm"></span>
+      </div>
 
+      <div>
+        <label for="fechaInicio" class="block mb-1 font-semibold text-gray-700">Fecha de Inicio</label>
+        <input type="date" id="fechaInicio" th:field="*{fechaInicio}"
+          class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" />
+        <span th:if="${#fields.hasErrors('fechaInicio')}" th:errors="*{fechaInicio}" class="text-red-600 text-sm"></span>
+      </div>
 
-            var currentTime = fecha.getHours() + ':' + fecha.getMinutes();
-            document.getElementById('horaInicio').value = currentTime;
-            document.getElementById('horaFinal').value = currentTime;
-        }
-        function calculardiasDiscount() {
-            var fechaini = new Date(document.getElementById('fechaInicio').value);
-            var fechafin = new Date(document.getElementById('fechaFinal').value);
-            var diasdif = fechafin.getTime() - fechaini.getTime();
-            var contdias = Math.round(diasdif / (1000 * 60 * 60 * 24));
-            alert(contdias);
-        }
+      <div>
+        <label for="horaInicio" class="block mb-1 font-semibold text-gray-700">Hora de Inicio</label>
+        <input type="time" id="horaInicio" placeholder="Hora de Inicio" th:field="*{horaInicio}"
+          class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" />
+        <span th:if="${#fields.hasErrors('horaInicio')}" th:errors="*{horaInicio}" class="text-red-600 text-sm"></span>
+      </div>
 
-        function calcular() {
-            var timeStart = new Date(document.getElementById("fechaInicio").value);
-            var timeEnd = new Date(document.getElementById("fechaFinal").value);
-            document.getElementById("duracion").value = 0;
-            if (timeEnd > timeStart) {
-                var diff = timeEnd.getTime() - timeStart.getTime();
-                document.getElementById("duracion").value = Math.round(diff / (1000 * 60 * 60 * 24));
-            } else if (timeEnd != null && timeEnd < timeStart) {
-                alert("Verifique las fechas");
-            }
-        }
+      <div>
+        <label for="fechaFinal" class="block mb-1 font-semibold text-gray-700">Fecha de Término</label>
+        <input type="date" id="fechaFinal" th:field="*{fechaFinal}" onchange="calcular()"
+          class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" />
+        <span th:if="${#fields.hasErrors('fechaFinal')}" th:errors="*{fechaFinal}" class="text-red-600 text-sm"></span>
+        <span th:if="${errorMessage}" th:text="${errorMessage}" id="spanError" class="text-red-600 font-semibold"></span>
+      </div>
 
-        function sumarFecha() {
-            var fecha = new Date(document.getElementById("fechaInicio").value);
-            //var dias = 2; // Número de días a agregar
-            fecha.setDate(fecha.getDate() + 4);
-            document.getElementById("fechaInicio").value = fecha.toDateString;
-            alert(fecha)
-        }
-    </script>
+      <div>
+        <label for="horaFinal" class="block mb-1 font-semibold text-gray-700">Hora Final</label>
+        <input type="time" id="horaFinal" placeholder="Hora Final" th:field="*{horaFinal}"
+          class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" />
+        <span th:if="${#fields.hasErrors('horaFinal')}" th:errors="*{horaFinal}" class="text-red-600 text-sm"></span>
+      </div>
+
+      <div>
+        <label for="interrupcion" class="block mb-1 font-semibold text-gray-700">Interrupción</label>
+        <input type="text" id="interrupcion" placeholder="Tiempo de Interrupción" th:field="*{interrupcion}"
+          class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" />
+        <span th:if="${#fields.hasErrors('interrupcion')}" th:errors="*{interrupcion}" class="text-red-600 text-sm"></span>
+      </div>
+
+      <div>
+        <label for="etapa" class="block mb-1 font-semibold text-gray-700">Etapa del Desarrollo</label>
+        <select th:field="*{etapa}"
+          class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
+          <option th:value="'1'">Planeación</option>
+          <option th:value="'2'">Diseño</option>
+          <option th:value="'3'">Revisión de Diseño</option>
+          <option th:value="'4'">Codificación</option>
+          <option th:value="'5'">Revisión de Codificación</option>
+          <option th:value="'6'">Compilación</option>
+          <option th:value="'7'">Pruebas Unitarias</option>
+          <option th:value="'8'">postmortem</option>
+        </select>
+        <span th:if="${#fields.hasErrors('etapa')}" th:errors="*{etapa}" class="text-red-600 text-sm"></span>
+      </div>
+
+      <div>
+        <label for="artefactos" class="block mb-1 font-semibold text-gray-700">Artefactos</label>
+        <input type="text" id="artefactos" placeholder="Entidades, paginas html" th:field="*{artefactos}"
+          class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" />
+        <span th:if="${#fields.hasErrors('artefactos')}" th:errors="*{artefactos}" class="text-red-600 text-sm"></span>
+      </div>
+
+      <div class="flex space-x-4">
+        <input type="submit" value="Registrar"
+          class="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-2 rounded cursor-pointer" />
+        <a href="../index"
+          class="bg-gray-500 hover:bg-gray-600 text-white font-semibold px-6 py-2 rounded inline-block text-center">Cancelar</a>
+      </div>
+
+    </form>
+  </div>
+
+  <script>
+    window.onload = function () {
+      var fecha = new Date(); //Fecha actual
+      var mes = fecha.getMonth() + 1; //obteniendo mes
+      var dia = fecha.getDate(); //obteniendo dia
+      var ano = fecha.getFullYear(); //obteniendo año
+      if (dia < 10)
+        dia = '0' + dia; //agrega cero si el menor de 10
+      if (mes < 10)
+        mes = '0' + mes //agrega cero si el menor de 10
+      document.getElementById('fechaInicio').value = ano + "-" + mes + "-" + dia;
+      document.getElementById('fechaFinal').value = ano + "-" + mes + "-" + dia;
+
+      var currentTime = fecha.getHours() + ':' + fecha.getMinutes();
+      document.getElementById('horaInicio').value = currentTime;
+      document.getElementById('horaFinal').value = currentTime;
+    }
+    function calculardiasDiscount() {
+      var fechaini = new Date(document.getElementById('fechaInicio').value);
+      var fechafin = new Date(document.getElementById('fechaFinal').value);
+      var diasdif = fechafin.getTime() - fechaini.getTime();
+      var contdias = Math.round(diasdif / (1000 * 60 * 60 * 24));
+      alert(contdias);
+    }
+
+    function calcular() {
+      var timeStart = new Date(document.getElementById("fechaInicio").value);
+      var timeEnd = new Date(document.getElementById("fechaFinal").value);
+      document.getElementById("duracion").value = 0;
+      if (timeEnd > timeStart) {
+        var diff = timeEnd.getTime() - timeStart.getTime();
+        document.getElementById("duracion").value = Math.round(diff / (1000 * 60 * 60 * 24));
+      } else if (timeEnd != null && timeEnd < timeStart) {
+        alert("Verifique las fechas");
+      }
+    }
+
+    function sumarFecha() {
+      var fecha = new Date(document.getElementById("fechaInicio").value);
+      //var dias = 2; // Número de días a agregar
+      fecha.setDate(fecha.getDate() + 4);
+      document.getElementById("fechaInicio").value = fecha.toDateString;
+      alert(fecha)
+    }
+  </script>
 </body>
 
 </html>

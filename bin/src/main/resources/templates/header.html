@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  ...
+</head>
+
+<body>
+  <div th:fragment="header">
+    <ul class="nav nav-tabs">
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true"
+          aria-expanded="false">Menu</a>
+        <div class="dropdown-menu">
+          <a class="dropdown-item" href="../proyectos/index">proyectos</a>
+          <a class="dropdown-item" href="../historias/index">Historias</a>
+          <a class="dropdown-item" href="../sprints/index">Sprints</a>
+          <a class="dropdown-item" href="../actividades/index">Actividades</a>
+          <div class="dropdown-divider"></div>
+          <a class="dropdown-item" href="../../users">Usuarios</a>
+          <div class="dropdown-divider"></div>
+          <a class="dropdown-item" href="../../logout">Salir</a>
+        </div>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link disabled" href="#">Acerca de</a>
+      </li>
+    </ul>
+  </div>
+</body>
+
+</html>

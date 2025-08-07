@@ -15,4 +15,5 @@ public interface ActividadService {
     public abstract Collection<Actividad> getActividads();
 
     public abstract Optional<Actividad> getActividad(Integer id);
+    void calcularHorasTotales(Actividad actividad);
 }
