@@ -9,76 +9,88 @@
 </head>
 
 <body class="bg-gray-50 text-gray-800">
-  <div class="max-w-7xl mx-auto px-4 py-8">
+  <div class="max-w-7xl mx-auto px-4 py-8 text-center">
 
     <!-- ENCABEZADO DE LA PAGINA -->
     <div th:replace="header :: header">...</div>
 
     <div th:switch="${actividades}">
-      <h2 th:case="null" class="text-lg font-semibold text-red-600 mb-4">No hay actividades registradas</h2>
+		<h2 th:case="null" class="text-lg font-semibold text-red-600 mb-4">No hay actividades registradas</h2>
 
-      <div th:case="*">
-        <h2 class="text-2xl font-bold mb-4">Lista de Actividades</h2>
-        <div class="overflow-x-auto shadow rounded-lg">
-          <table class="min-w-full bg-white divide-y divide-gray-200">
-            <thead class="bg-gray-800 text-white">
-              <tr>
-                <th class="px-4 py-2 text-left">Historia</th>
-                <th class="px-4 py-2 text-left">Descripción</th>
-                <th class="px-4 py-2 text-left">Fecha Inicio</th>
-                <th class="px-4 py-2 text-left">Hora Inicio</th>
-                <th class="px-4 py-2 text-left">Fecha Fin</th>
-                <th class="px-4 py-2 text-left">Hora Final</th>
-                <th class="px-4 py-2 text-left">Interrupción</th>
-                <th class="px-4 py-2 text-left">Hora Total</th>
-                <th class="px-4 py-2 text-left">Etapa</th>
-                <th class="px-4 py-2 text-left">Artefactos</th>
-                <th class="px-4 py-2 text-left">Operación</th>
-              </tr>
-            </thead>
-            <tbody class="divide-y divide-gray-100">
-              <tr th:each="actividad : ${actividades}" class="hover:bg-gray-50">
-                <td class="px-4 py-2" th:text="${actividad.history}!=null? ${actividad.history.id}:''"></td>
-                <td class="px-4 py-2" th:text="${actividad.descripcion}"></td>
-                <td class="px-4 py-2" th:text="${#dates.format(actividad.fechaInicio, 'dd/MM/yyyy')}"></td>
-                <td class="px-4 py-2" th:text="${actividad.horaInicio}"></td>
-                <td class="px-4 py-2" th:text="${#dates.format(actividad.fechaFinal, 'dd/MM/yyyy')}"></td>
-                <td class="px-4 py-2" th:text="${actividad.horaFinal}"></td>
-                <td class="px-4 py-2" th:text="${actividad.interrupcion}"></td>
-                <td class="px-4 py-2" th:text="${#numbers.formatDecimal(actividad.horasTotales, 1, 2)}">0.00</td>
-                <td class="px-4 py-2" th:switch="${actividad.etapa}">
-                  <span th:case="'1'">Planeación</span>
-                  <span th:case="'2'">Diseño</span>
-                  <span th:case="'3'">Revisión de Diseño</span>
-                  <span th:case="'4'">Codificación</span>
-                  <span th:case="'5'">Revisión de Codificación</span>
-                  <span th:case="'6'">Compilación</span>
-                  <span th:case="'7'">Pruebas Unitarias</span>
-                  <span th:case="'8'">Postmortem</span>
-                </td>
-                <td class="px-4 py-2" th:text="${actividad.artefactos}"></td>
-                <td class="px-4 py-2 flex gap-2">
-                  <a class="bg-yellow-400 hover:bg-yellow-500 text-white px-3 py-1 rounded text-sm"
-                     th:href="@{modificar/{id}(id=${actividad.id})}">Actualizar</a>
-                  <a class="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded text-sm"
-                     th:href="@{eliminar/{id}(id=${actividad.id})}">Eliminar</a>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-
-      <div class="mt-6 flex gap-4">
-        <a class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded text-sm" href="/scrum/actividades/registrar">Agregar</a>
-        <a class="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded text-sm" href="index">Regresar</a>
-      </div>
-    </div>
-
-    <!-- PIE DE LA PÁGINA -->
-    <div th:replace="footer :: copy">...</div>
-
-  </div>
+      		<div th:case="*">
+				<h2 class="text-3xl font-bold mt-8 mb-6">Lista de Actividades</h2>
+				<div class="overflow-x-auto shadow rounded-lg">
+					<table class="min-w-full text-sm bg-white">
+						<thead class="bg-gray-800 text-white">
+							<tr>
+				                <th class="px-4 py-2 text-center">Historia</th>
+				                <th class="px-4 py-2 text-center">Descripción</th>
+				                <th class="px-4 py-2 text-center">Fecha Inicio</th>
+				                <th class="px-4 py-2 text-center">Hora Inicio</th>
+				                <th class="px-4 py-2 text-center">Fecha Fin</th>
+				                <th class="px-4 py-2 text-center">Hora Final</th>
+				                <th class="px-4 py-2 text-center">Interrupción</th>
+				                <th class="px-4 py-2 text-center">Hora Total</th>
+				                <th class="px-4 py-2 text-center">Etapa</th>
+				                <th class="px-4 py-2 text-center">Artefactos</th>
+				                <th class="px-4 py-2 text-center">Operación</th>
+		              		</tr>
+						</thead>
+            			<tbody class="divide-y divide-gray-100">
+              				<tr th:each="actividad : ${actividades}" class="hover:bg-gray-50">
+				                <td class="px-4 py-2 text-center" th:text="${actividad.history}!=null? ${actividad.history.id}:''"></td>
+				                <td class="px-4 py-2 text-center" th:text="${actividad.descripcion}"></td>
+				                <td class="px-4 py-2 text-center" th:text="${#dates.format(actividad.fechaInicio, 'dd/MM/yyyy')}"></td>
+				                <td class="px-4 py-2 text-center" th:text="${actividad.horaInicio}"></td>
+				                <td class="px-4 py-2 text-center" th:text="${#dates.format(actividad.fechaFinal, 'dd/MM/yyyy')}"></td>
+				                <td class="px-4 py-2 text-center" th:text="${actividad.horaFinal}"></td>
+				                <td class="px-4 py-2 text-center" th:text="${actividad.interrupcion}"></td>
+				                <td class="px-4 py-2 text-center" th:text="${#numbers.formatDecimal(actividad.horasTotales, 1, 2)}">0.00</td>
+				                <td class="px-4 py-2 text-center" th:switch="${actividad.etapa}">
+									<span th:case="'1'">Planeación</span>
+				                  	<span th:case="'2'">Diseño</span>
+				                  	<span th:case="'3'">Revisión de Diseño</span>
+				                  	<span th:case="'4'">Codificación</spa>
+				              	    <span th:case="'5'">Revisión de Codificación</span>
+				           	 		<span th:case="'6'">Compilación</span>
+				              	    <span th:case="'7'">Pruebas Unitarias</span>
+				                  	<span th:case="'8'">Postmortem</span>
+	                			</td>
+	                			<td class="px-4 py-2" th:text="${actividad.artefactos}"></td>
+								<td class="py-2 px-4">
+									<div class="flex flex-wrap gap-2 justify-center">
+										<!-- Icono Editar -->
+										<a th:href="@{modificar/{id}(id=${actividad.id})}" title="Actualizar">
+											<img src="/icons/edit.png" alt="Editar" class="w-6 h-6 hover:scale-110 transition-transform duration-200">
+										</a>
+		
+										<!-- Icono Eliminar -->
+										<a th:href="@{eliminar/{id}(id=${actividad.id})}" title="Eliminar">
+											<img src="/icons/delete.png" alt="Eliminar" class="w-6 h-6 hover:scale-110 transition-transform duration-200">
+										</a>
+									</div>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+		   </div>
+		   	<!-- BOTONES RESPONSIVOS -->
+		   	<div class="mt-6 flex flex-col sm:flex-row justify-center gap-4">
+		   		<a href="/scrum/actividades/registrar"
+		   			class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded text-center">Registrar
+		   	    </a>
+		   	    <a href="index"
+		   	      class="bg-gray-600 hover:bg-gray-700 text-white px-4 py-2 rounded text-center">Regresar</a>
+		   	</div>
+		</div>
+		<!-- PIE DE LA PÁGINA -->
+		<div th:replace="footer :: copy">...</div>
+	</div>
+</div>
 </body>
-
 </html>
+
+
+
+

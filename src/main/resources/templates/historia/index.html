@@ -2,8 +2,8 @@
 <html xmlns:th="http://www.thymeleaf.org" lang="es">
 
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Listado de Historias</title>
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
@@ -19,28 +19,27 @@
       <h2 th:case="null" class="text-xl text-red-600 font-semibold">No hay historias registradas</h2>
 
       <div th:case="*">
-        <h2 class="text-2xl font-bold mb-6">Lista de Historias</h2>
+        <h2 class="text-3xl font-bold mt-8 mb-6">Lista de Historias</h2>
 
-        <div class="overflow-x-auto">
-          <table class="min-w-full bg-white border border-gray-300 shadow rounded-lg">
+        <div class="overflow-x-auto rounded-lg shadow">
+          <table class="min-w-full bg-white border border-gray-300">
             <thead class="bg-gray-800 text-white">
               <tr>
-                <th class="px-4 py-2 border">Número</th>
-                <th class="px-4 py-2 border">Nombre</th>
-                <th class="px-4 py-2 border">Descripción</th>
-                <th class="px-4 py-2 border">Peso</th>
-                <th class="px-4 py-2 border">Usuario</th>
-                <th class="px-4 py-2 border">Proyecto</th>
-                <th class="px-4 py-2 border">Estado</th>
-                <th class="px-4 py-2 border">Actualizar</th>
-                <th class="px-4 py-2 border">Eliminar</th>
+                <th class="px-4 py-2 border whitespace-nowrap">Número</th>
+                <th class="px-4 py-2 border whitespace-nowrap">Nombre</th>
+                <th class="px-4 py-2 border whitespace-nowrap">Descripción</th>
+                <th class="px-4 py-2 border whitespace-nowrap">Peso</th>
+                <th class="px-4 py-2 border whitespace-nowrap">Usuario</th>
+                <th class="px-4 py-2 border whitespace-nowrap">Proyecto</th>
+                <th class="px-4 py-2 border whitespace-nowrap">Estado</th>
+                <th class="px-4 py-2 border whitespace-nowrap">Operaciones</th>
               </tr>
             </thead>
             <tbody>
               <tr th:each="historia : ${historias}" class="hover:bg-gray-100">
                 <td class="px-4 py-2 border" th:text="${historia.id}"></td>
                 <td class="px-4 py-2 border" th:text="${historia.nombre}"></td>
-                <td class="px-4 py-2 border" th:text="${historia.descripcion}"></td>
+                <td class="px-4 py-2 border truncate max-w-xs" th:text="${historia.descripcion}"></td>
                 <td class="px-4 py-2 border" th:text="${historia.peso}"></td>
                 <td class="px-4 py-2 border" th:text="${historia.usuario}"></td>
                 <td class="px-4 py-2 border" th:text="${historia.project} != null ? ${historia.project.id} : ''"></td>
@@ -49,13 +48,19 @@
                   <span th:case="'2'" class="text-blue-600 font-medium">En proceso</span>
                   <span th:case="'3'" class="text-green-600 font-medium">Hecho</span>
                 </td>
-                <td class="px-4 py-2 border">
-                  <a class="bg-yellow-500 hover:bg-yellow-600 text-white py-1 px-3 rounded"
-                     th:href="@{modificar/{id}(id=${historia.id})}">Actualizar</a>
-                </td>
-                <td class="px-4 py-2 border">
-                  <a class="bg-red-600 hover:bg-red-700 text-white py-1 px-3 rounded"
-                     th:href="@{eliminar/{id}(id=${historia.id})}">Eliminar</a>
+				
+                <td class="px-2 px-4">
+					<div class="flex flex-wrap gap-2 justify-center">
+	                  <a th:href="@{modificar/{id}(id=${historia.id})}" title="Actualizar">
+						<img src="/icons/edit.png" alt="Editar" class="w-6 h-6 hover:scale-110 transition-transform duration-200">
+					  </a>		
+					  
+					  <!-- Icono Eliminar -->
+					  <a th:href="@{eliminar/{id}(id=${historia.id})}" title="Eliminar">
+					  	<img src="/icons/delete.png" alt="Eliminar" class="w-6 h-6 hover:scale-110 transition-transform duration-200">
+					  </a>
+					</div>			
+				  	   
                 </td>
               </tr>
             </tbody>
@@ -63,12 +68,13 @@
         </div>
       </div>
 
-      <div class="mt-6 space-x-4">
-        <a class="bg-green-600 hover:bg-green-700 text-white py-2 px-4 rounded"
-           href="../historias/registrar">Registrar</a>
-        <a class="bg-gray-600 hover:bg-gray-700 text-white py-2 px-4 rounded"
-           href="../historias/index">Regresar</a>
+      <div class="mt-6 flex flex-col sm:flex-row justify-center gap-4">
+        <a href="../historias/registrar"
+			class="bg-green-600 hover:bg-green-700 text-white py-2 px-6 rounded text-center">Registrar</a>
+        <a href="../historias/index" 
+			class="bg-gray-600 hover:bg-gray-700 text-white py-2 px-6 rounded">Regresar</a>
       </div>
+	  
     </div>
 
     <!-- PIE DE LA PÁGINA -->
@@ -78,3 +84,4 @@
 </body>
 
 </html>
+

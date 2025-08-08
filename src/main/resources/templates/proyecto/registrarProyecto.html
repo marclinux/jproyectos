@@ -13,7 +13,7 @@
   <div class="max-w-md mx-auto mt-10 bg-white p-8 rounded-lg shadow-md">
     <h1 class="text-2xl font-bold mb-6 text-center">Registrar Proyecto</h1>
 
-    <form action="#" th:action="@{/scrum/proyectos/addFrom}" th:object="${proyecto}" method="post" class="space-y-6">
+    <form id="formProyecto" action="#" th:action="@{/scrum/proyectos/addFrom}" th:object="${proyecto}" method="post" class="space-y-6">
 
       <!-- Campo Nombre -->
       <div>
@@ -21,6 +21,7 @@
         <input type="text" id="nombre" th:field="*{nombre}" placeholder="Nombre"
           class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" />
         <span class="text-sm text-red-600" th:if="${#fields.hasErrors('nombre')}" th:errors="*{nombre}"></span>
+		<span id="errorNombre" class="text-sm text-red-600 hidden">Campo obligatorio</span>
       </div>
 
       <!-- Checkbox deshabilitado -->
@@ -32,15 +33,31 @@
       </div>
 
       <!-- Botones -->
-      <div class="flex justify-between">
+      <div class="flex flex-col sm:flex-row sm:justify-between gap-3">
         <input type="submit" value="Registrar"
-          class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 cursor-pointer" />
+          class="bg-green-600 text-white px-4 py-2 rounded hover:bg-blue-700 cursor-pointer w-full sm:w-auto" />
         <a href="index"
-          class="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600">Cancelar</a>
+          class="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600 text-center w-full sm:w-auto block">Cancelar</a>
       </div>
 
     </form>
   </div>
+  
+  <script>
+    document.getElementById("formProyecto").addEventListener("submit", function (event) {
+      const nombreInput = document.getElementById("nombre");
+      const errorSpan = document.getElementById("errorNombre");
+
+      if (nombreInput.value.trim() === "") {
+        event.preventDefault(); // Evita el envío
+        nombreInput.classList.add("border-red-500");
+        errorSpan.classList.remove("hidden");
+      } else {
+        nombreInput.classList.remove("border-red-500");
+        errorSpan.classList.add("hidden");
+      }
+    });
+  </script>
 
 </body>
 
