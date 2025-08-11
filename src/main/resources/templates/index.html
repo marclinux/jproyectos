@@ -12,10 +12,8 @@
   <!-- NAVBAR -->
   <nav class="bg-[#ADD8E6] px-4 py-2 w-full relative">
     <div class="max-w-7xl mx-auto flex items-center justify-between">
-      <!-- Logo -->
       <a th:href="@{/index}" class="font-bold text-xl">SCRUM CONTROL</a>
 
-      <!-- Botón hamburguesa -->
       <button class="md:hidden block" onclick="toggleMenu()">
         <svg class="w-6 h-6" fill="none" stroke="black" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -23,14 +21,12 @@
         </svg>
       </button>
 
-      <!-- Enlaces en pantallas grandes -->
       <div class="hidden md:flex space-x-4">
         <a th:href="@{/register}" class="text-black hover:text-white px-3 py-2 rounded-md text-sm font-medium">Registrarse</a>
         <a th:href="@{/login}" class="text-black hover:text-white px-3 py-2 rounded-md text-sm font-medium">Login</a>
       </div>
     </div>
 
-    <!-- Menú desplegable en móviles -->
     <div id="mobileMenu" class="absolute top-full left-0 w-full md:hidden hidden">
       <div class="bg-white shadow-lg rounded-b-lg p-4 flex flex-col space-y-2 animate-slide-down">
         <a th:href="@{/register}" class="text-black px-3 py-2 rounded-md text-sm font-medium hover:bg-gray-100">Registrarse</a>
@@ -39,11 +35,29 @@
     </div>
   </nav>
 
-  <!-- CONTENIDO PRINCIPAL -->
-  <div class="container mx-auto px-4 py-16">
-    <h1 class="text-3xl font-bold text-center text-black">Sistema de Gestión de Proyectos SCRUM</h1>
-  </div>
+  <div class="relative min-h-screen flex items-center justify-center">
+    <!-- Fondo gris en la mitad inferior -->
+    <div class="absolute bottom-0 left-0 w-full h-1/2 bg-gray-200 z-0"></div>
+	 
+	<!-- Fondo naranja vertical a la izquierda -->
+	 <div class="absolute bottom-0 left-20 h-full w-[280px] bg-orange-400 z-10 animate-slide-left"></div>
 
+	
+    <!-- Contenedor principal con imagen y texto -->
+    <div class="relative max-w-4xl w-full h-[500px] mt-16 z-10">
+      <!-- Imagen con animación desde la izquierda -->
+      <img th:src="@{/icons/fondo.png}" alt="Fondo SCRUM"
+           class="w-full h-full object-cover rounded-lg shadow-lg animate-slide-left" />
+
+      <!-- Texto con animación desde abajo y desplazado a la derecha -->
+      <div class="absolute inset-0 flex items-end justify-end pr-12 pb-10">
+        <div class="bg-white bg-opacity-90 px-10 py-8 rounded-lg shadow-lg text-right animate-rise-up">
+          <h1 class="text-6xl font-bold text-gray-800">Sistema de Gestión de Proyectos SCRUM</h1>
+        </div>
+      </div>
+    </div>
+  </div>
+  
   <!-- Script para desplegar menú -->
   <script>
     function toggleMenu() {
@@ -54,10 +68,10 @@
 
   <!-- Animación personalizada -->
   <style>
-    @keyframes slide-down {
+    @keyframes fade-slide {
       from {
         opacity: 0;
-        transform: translateY(-10px);
+        transform: translateY(30px);
       }
       to {
         opacity: 1;
@@ -65,9 +79,27 @@
       }
     }
 
-    .animate-slide-down {
-      animation: slide-down 0.3s ease-out;
+    .animate-fade-slide {
+      animation: fade-slide 1s ease-out forwards;
     }
+	@keyframes slide-left {
+	  from { transform: translateX(-60px); opacity: 0; }
+	  to { transform: translateX(0); opacity: 1; }
+	}
+
+	@keyframes rise-up {
+	  from { transform: translateY(40px); opacity: 0; }
+	  to { transform: translateY(0); opacity: 1; }
+	}
+
+	.animate-slide-left {
+	  animation: slide-left 1s ease-out forwards;
+	}
+
+	.animate-rise-up {
+	  animation: rise-up 1.2s ease-out forwards;
+	}
+	
   </style>
 
 </body>

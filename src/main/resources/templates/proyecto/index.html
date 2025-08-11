@@ -1,68 +1,68 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="es">
-
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Listado de Proyectos</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-</head>
-
+<head><meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" /><title>Listado de Proyectos</title><script src="https://cdn.tailwindcss.com"></script></head>
 <body class="bg-gray-100 text-gray-800">
+	<div class="max-w-6xl mx-auto px-4 py-8 text-center">
+		<!-- ENCABEZADO DE LA PÁGINA -->
+		<div th:replace="header :: header">...</div>
 
-  <div class="max-w-6xl mx-auto px-4 py-8 text-center">
+		<div th:switch="${proyectos}">
+	  		<h2 th:case="null" class="text-xl font-semibold text-red-600 mb-4">No hay proyectos registrados</h2>
 
-    <!-- ENCABEZADO DE LA PÁGINA -->
-    <div th:replace="header :: header">...</div>
+	  	<div th:case="*">
+			<h2 class="text-3xl font-bold mt-8 mb-6">Lista de Proyectos</h2>
 
-    <div th:switch="${proyectos}">
-      <h2 th:case="null" class="text-xl font-semibold text-red-600 mb-4">No hay proyectos registrados</h2>
+	    <!-- TABLA RESPONSIVA -->
+	    <div class="overflow-x-auto shadow rounded-lg">
+			<table class="min-w-full text-sm bg-white">
+	        	<thead class="bg-gray-600 text-white">
+					<tr>
+			            <th class="py-3 px-4 text-center">Nombre</th>
+			            <th class="py-3 px-4 text-center">Activo</th>
+			            <th class="py-3 px-4 text-center">Operaciones</th>
+	          		</tr>
+	        	</thead>
+	        	<tbody>
+					<tr th:each="proyecto : ${proyectos}" class="border-b hover:bg-gray-50">
+						<td class="py-2 px-4" th:text="${proyecto.nombre}"></td>
+	            		<td class="py-2 px-4"><input type="checkbox" th:checked="${proyecto.estaActivo}" disabled
+	                		class="h-4 w-4 text-green-600 rounded border-gray-300" />
+						</td>
+						
+	            		<td class="py-2 px-4">
+							<div class="flex flex-wrap gap-2 justify-center">
+								<!-- Icono Editar -->
+								<a th:href="@{modificar/{id}(id=${proyecto.id})}" title="Actualizar">
+					     			<img src="/icons/edit.png" alt="Editar" class="w-6 h-6 hover:scale-110 transition-transform duration-200">
+					   			</a>
 
-      <div th:case="*">
-        <h2 class="text-2xl font-bold mb-6">Lista de Proyectos</h2>
+					   			<!-- Icono Eliminar -->
+					   			<a th:href="@{eliminar/{id}(id=${proyecto.id})}" title="Eliminar">
+					     			<img src="/icons/delete.png" alt="Eliminar" class="w-6 h-6 hover:scale-110 transition-transform duration-200">
+					   			</a>
+					
+	              			</div>
+	           			</td>
+					</tr>
+				</tbody>
+			</table>
+	    </div>
+	</div>
+	<!-- BOTONES RESPONSIVOS -->
+	<div class="mt-6 flex flex-col sm:flex-row justify-center gap-4">
+		<a href="/scrum/proyectos/registrar"
+			class="bg-[#A52A2A] hover:bg-[#800020] text-white px-4 py-2 rounded text-center">Registrar
+	    </a>
+	    <a href="../../index"
+	      class="bg-pink-600 hover:bg-pink-700 text-white px-4 py-2 rounded text-center">Regresar</a>
+	  </div>
+	</div>
 
-        <div class="overflow-x-auto">
-          <table class="min-w-full bg-white shadow rounded-lg">
-            <thead class="bg-gray-800 text-white">
-              <tr>
-                <th class="py-3 px-4 text-left">Nombre</th>
-                <th class="py-3 px-4 text-left">Activo</th>
-                <th class="py-3 px-4 text-left">Operación</th>
-                <th class="py-3 px-4 text-left">Operación</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr th:each="proyecto : ${proyectos}" class="border-b hover:bg-gray-50">
-                <td class="py-2 px-4" th:text="${proyecto.nombre}"></td>
-                <td class="py-2 px-4">
-                  <input type="checkbox" th:checked="${proyecto.estaActivo}" disabled
-                    class="h-4 w-4 text-green-600 rounded border-gray-300" />
-                </td>
-                <td class="py-2 px-4">
-                  <a th:href="@{modificar/{id}(id=${proyecto.id})}"
-                    class="bg-yellow-400 hover:bg-yellow-500 text-white font-semibold py-1 px-3 rounded">Actualizar</a>
-                </td>
-                <td class="py-2 px-4">
-                  <a th:href="@{eliminar/{id}(id=${proyecto.id})}"
-                    class="bg-red-600 hover:bg-red-700 text-white font-semibold py-1 px-3 rounded">Eliminar</a>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
+	<!-- PIE DE LA PÁGINA -->
+	<div th:replace="footer :: copy" class="mt-10">...</div>
 
-      <div class="mt-6 flex justify-center gap-4">
-        <a href="/scrum/proyectos/registrar"
-          class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded">Registrar</a>
-        <a href="../../index" class="bg-gray-600 hover:bg-gray-700 text-white px-4 py-2 rounded">Regresar</a>
-      </div>
-    </div>
-
-    <!-- PIE DE LA PÁGINA -->
-    <div th:replace="footer :: copy" class="mt-10">...</div>
-  </div>
-
+</div>
 </body>
-
 </html>
+
+	
