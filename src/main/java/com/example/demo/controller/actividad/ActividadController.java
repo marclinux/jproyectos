@@ -6,6 +6,7 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
+import java.util.Optional;
 
 import javax.validation.Valid;
 
@@ -44,49 +45,81 @@ public class ActividadController {
     model.addAttribute("historias",historiaService.getHistorias());
     return "actividad/registrarActividad";
   }
+  
+  
 
   @PostMapping(path = "/registrar") // registro DAO
   public String registrar(@ModelAttribute("actividad") @Valid Actividad e, BindingResult bindingResult,Model model) {
-    if (bindingResult.hasErrors()) {
+	  
+	  // Siempre repoblar el select de historias antes de cualquier return que muestre la vista
+	  model.addAttribute("historias", historiaService.getHistorias());
+	  
+	  if (bindingResult.hasErrors()) {
       return "/actividad/registrarActividad";
-    } else {      
-      if(e.getFechaFinal().before(e.getFechaInicio())){
-        model.addAttribute("errorMessage","LA FECHA DEBE SER MAYOR A LA FECHA INICIAL");
-        return "/actividad/registrarActividad";
-      }      
-      Historia h=historiaService.getHistoria(e.getHistory().getId()).get();
-      if(h==null){
-        model.addAttribute("errorMessage","LA FECHA DEBE SER MAYOR A LA FECHA INICIAL");
-        return "/actividad/registrarActividad";
-      }else{
-        e.setHistory(h);
-        ActividadService.createActividad(e);
+      }
+	  
+	 
+
+      if (e.getFechaFinal().before(e.getFechaInicio())) {
+          model.addAttribute("errorMessage", "LA FECHA DEBE SER MAYOR A LA FECHA INICIAL");
+          model.addAttribute("historias", historiaService.getHistorias());
+          return "/actividad/registrarActividad";
+      }
+
+      // Solo buscar la historia si se seleccionó
+      if (e.getHistory() != null && e.getHistory().getId() != null) {
+          Historia h = historiaService.getHistoria(e.getHistory().getId())
+                                      .orElse(null);
+          if (h != null) {
+              e.setHistory(h);
+          } else {
+        	  e.setHistory(null);
+          }
+      } else {
+          e.setHistory(null);
       }
       
-      
+      // Guardar actividad
+      ActividadService.createActividad(e);
       return "redirect:/scrum/actividades/index";
-    }
+    
   }
+  
 
   @GetMapping("/modificar/{id}") // VISTA HTML
-  public String modificar(@PathVariable int id, Model model) {
-    model.addAttribute("historias",historiaService.getHistorias());
-    model.addAttribute("actividad", ActividadService.getActividad(id).get());
-    //obtener historias
-
-    return "actividad/modificarActividad";
-
+  public String modificar(@PathVariable Integer id, Model model) {
+      model.addAttribute("historias", historiaService.getHistorias());
+      Optional<Actividad> actividadOpt = ActividadService.getActividad(id);
+      if(actividadOpt.isPresent()) {
+          model.addAttribute("actividad", actividadOpt.get());
+      } else {
+          return "redirect:/scrum/actividades/index"; // o página de error
+      }
+      return "actividad/modificarActividad";
   }
 
   @PostMapping("/actualizar/{id}") // PERSISTENTE
-  public String modificar(@PathVariable int id, @ModelAttribute("actividad") Actividad e, Model model) {
-    e.setHistory(historiaService.getHistoria(e.getHistory().getId()).get());
-    ActividadService.updateActividad(id, e);
-    return "redirect:/scrum/actividades/index";
+  public String modificar(@PathVariable Integer id, @ModelAttribute("actividad") Actividad e, Model model) {
+
+      // Historia opcional
+      if (e.getHistory() != null && e.getHistory().getId() != null) {
+          Optional<Historia> historiaOpt = historiaService.getHistoria(e.getHistory().getId());
+          historiaOpt.ifPresent(e::setHistory);
+      } else {
+          e.setHistory(null);
+      }
+
+      // Actualizar la actividad
+      ActividadService.updateActividad(id, e);
+
+      return "redirect:/scrum/actividades/index";
   }
 
+  
+  
+
   @GetMapping(path = "/eliminar/{id}")
-  public String eliminar(@PathVariable int id) {    
+  public String eliminar(@PathVariable Integer id) {    
     Actividad e = ActividadService.getActividad(id).get();    
     if (e == null) {
       return "redirect:/scrum/actividades/index";
