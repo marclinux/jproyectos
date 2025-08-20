@@ -2,9 +2,12 @@ package com.example.demo.model;
 
 import java.util.Date;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
 
@@ -25,6 +28,11 @@ public class Sprint {
     private Date fechaFinal;
     private Integer dias;    
     private int estado;
+    
+    //Relacion con Proyecto
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "proyecto_id", nullable = false)
+    private Proyecto proyecto;
     
     public Sprint(){
         
@@ -51,6 +59,7 @@ public class Sprint {
         this.nombre = nombre;
     }      
 
+    
     public Integer getId() {
         return id;
     }
@@ -64,8 +73,6 @@ public class Sprint {
         return descripcion;
     }
 
-
-
     public void setDescripcion(String descripcion) {
         this.descripcion = descripcion;
     }
@@ -76,8 +83,6 @@ public class Sprint {
         return fechaInicio;
     }
 
-
-
     public void setFechaInicio(Date fechaInicio) {
         this.fechaInicio = fechaInicio;
     }
@@ -87,21 +92,16 @@ public class Sprint {
     public Date getFechaFinal() {
         return fechaFinal;
     }
-
-
-
+    
     public void setFechaFinal(Date fechaFinal) {
         this.fechaFinal = fechaFinal;
     }
 
 
-
     public Integer getDias() {
         return dias;
     }
-
-
-
+    
     public void setDias(Integer dias) {
         this.dias = dias;
     }
@@ -111,13 +111,18 @@ public class Sprint {
     public int getEstado() {
         return estado;
     }
-
-
-
+    
     public void setEstado(int estado) {
         this.estado = estado;
     }
-
     
+    
+    public Proyecto getProyecto() {
+    	return proyecto;
+    }
+    
+    public void setProyecto(Proyecto proyecto) {
+    	this.proyecto = proyecto;
+    }
     
 }

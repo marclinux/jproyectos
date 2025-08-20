@@ -23,8 +23,18 @@ public class SprintServiceImpl implements SprintService{
 
     @Override
     public void updateSprint(Integer id, Sprint Sprint) {
-        SprintRepository.deleteById(id);
-        SprintRepository.save(Sprint);        
+    	 Optional<Sprint> existing = SprintRepository.findById(id);
+         if (existing.isPresent()) {
+             Sprint s = existing.get();
+             s.setNombre(Sprint.getNombre());
+             s.setDescripcion(Sprint.getDescripcion());
+             s.setFechaInicio(Sprint.getFechaInicio());
+             s.setFechaFinal(Sprint.getFechaFinal());
+             s.setDias(Sprint.getDias());
+             s.setEstado(Sprint.getEstado());
+             s.setProyecto(Sprint.getProyecto()); // importante!
+             SprintRepository.save(s);
+         }      
     }
 
     @Override
@@ -34,11 +44,17 @@ public class SprintServiceImpl implements SprintService{
 
     @Override
     public Collection<Sprint> getSprints() {
-        return (Collection<Sprint>) SprintRepository.findAll();
+        return SprintRepository.findAll();
     }
 
     @Override
     public Optional<Sprint> getSprint(Integer id) {
         return SprintRepository.findById(id);
-    }    
+    }  
+    
+    @Override
+    public Collection<Sprint> getSprintsByProyecto(Integer proyectoId) {
+        return SprintRepository.findByProyectoId(proyectoId);
+    }
+    
 }

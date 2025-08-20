@@ -1,5 +1,7 @@
 package com.example.demo.controller.sprints;
 
+import java.util.Optional;
+
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +13,8 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
 import com.example.demo.model.Sprint;
 import com.example.demo.service.sprint.SprintService;
 
@@ -18,57 +22,75 @@ import com.example.demo.service.sprint.SprintService;
 @RequestMapping("/scrum/sprints") // This means URL's start with /Sprint (after Application path)
 public class SprintController {
   @Autowired
-  private SprintService SprintService;
+  private SprintService sprintService;
 
   @GetMapping("/index")
   public String showUserList(Model model) {
-    model.addAttribute("sprints", SprintService.getSprints());
+    model.addAttribute("sprints", sprintService.getSprints());
     return "sprint/index";
   }
 
   @GetMapping("/registrar") // VISTA HMTL
   public String registrar(Model model) {
-    Sprint n = new Sprint();
-    model.addAttribute("sprint", n);
+    //Sprint n = new Sprint();
+    model.addAttribute("sprint", new Sprint());
     return "sprint/registrarSprint";
   }
 
   @PostMapping(path = "/registrar") // registro DAO
-  public String registrar(@ModelAttribute("sprint") @Valid Sprint e, BindingResult bindingResult,Model model) {
+  public String registrar(@ModelAttribute("sprint") @Valid Sprint e, BindingResult bindingResult,Model model
+		  RedirectAttributes ra) {
     if (bindingResult.hasErrors()) {
       return "/sprint/registrarSprint";
-    } else {      
-      if(e.getFechaFinal().before(e.getFechaInicio())){
-        model.addAttribute("errorMessage","LA FECHA DEBE SER MAYOR A LA FECHA INICIAL");
-        return "/sprint/registrarSprint";
-      }
       
-      SprintService.createSprint(e);
-      return "redirect:/scrum/sprints/index";
     }
-  }
+    if (sprint.getFechaInicio() != null && sprint.getFechaFinal() != null
+            && sprint.getFechaFinal().before(sprint.getFechaInicio())) {
+        model.addAttribute("errorMessage", "La fecha final debe ser mayor o igual a la fecha inicial");
+        return "sprint/registrarSprint";
+    }
+
+    // IMPORTANTE: el sprint debe tener proyecto por la FK NOT NULL
+    if (sprint.getProyecto() == null) {
+        model.addAttribute("errorMessage", "Debe seleccionar un proyecto para el sprint.");
+        return "sprint/registrarSprint";
+    }
+
+    sprintService.createSprint(sprint);
+    ra.addFlashAttribute("successMessage", "Sprint creado correctamente");
+    return "redirect:/scrum/sprints/index";
+}
+    
+
 
   @GetMapping("/modificar/{id}") // VISTA HTML
-  public String modificar(@PathVariable int id, Model model) {
-    model.addAttribute("sprint", SprintService.getSprint(id).get());
+  public String modificar(@PathVariable Integer id, Model model, RedirectAttributes ra) {
+    Optional<Sprint> opt = sprintService.getSprint(id);
+    if(opt.isEmpty()) {
+    	ra.addFlashAttribute("errorMessage", "El sprint con id" + id + "no existe.");
+    	return "redirect:/scrum/sprints/index";
+    }
+    
+	  model.addAttribute("sprint", opt.get());
     return "sprint/modificarSprint";
 
   }
-
+// aqui me quedeeeeeeeeeeeeeeee
+  
   @PostMapping("/actualizar/{id}") // PERSISTENTE
   public String modificar(@PathVariable int id, @ModelAttribute("sprint") Sprint e, Model model) {
-    SprintService.updateSprint(id, e);
+	  sprintService.updateSprint(id, e);
     return "redirect:/scrum/sprints/index";
   }
 
   @GetMapping(path = "/eliminar/{id}")
   public String eliminar(@PathVariable int id) {
-    Sprint e = SprintService.getSprint(id).get();
+    Sprint e = sprintService.getSprint(id).get();
     if (e == null) {
       return "redirect:/scrum/sprints/index";
     } else {
-      SprintService.deleteSprint(id);
-      return "redirect:/scrum/sprints/index";
+    	sprintService.deleteSprint(id);
+    	return "redirect:/scrum/sprints/index";
     }
   }
 

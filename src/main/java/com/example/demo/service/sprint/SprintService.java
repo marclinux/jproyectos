@@ -15,4 +15,6 @@ public interface SprintService {
     public abstract Collection<Sprint> getSprints();
 
     public abstract Optional<Sprint> getSprint(Integer id);
+
+	Collection<Sprint> getSprintsByProyecto(Integer proyectoId);
 }
