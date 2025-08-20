@@ -38,25 +38,25 @@ public class SprintController {
   }
 
   @PostMapping(path = "/registrar") // registro DAO
-  public String registrar(@ModelAttribute("sprint") @Valid Sprint e, BindingResult bindingResult,Model model
+  public String registrar(@ModelAttribute("sprint") @Valid Sprint e, BindingResult bindingResult,Model model,
 		  RedirectAttributes ra) {
     if (bindingResult.hasErrors()) {
       return "/sprint/registrarSprint";
       
     }
-    if (sprint.getFechaInicio() != null && sprint.getFechaFinal() != null
-            && sprint.getFechaFinal().before(sprint.getFechaInicio())) {
+    if (e.getFechaInicio() != null && e.getFechaFinal() != null
+            && e.getFechaFinal().before(e.getFechaInicio())) {
         model.addAttribute("errorMessage", "La fecha final debe ser mayor o igual a la fecha inicial");
         return "sprint/registrarSprint";
     }
 
     // IMPORTANTE: el sprint debe tener proyecto por la FK NOT NULL
-    if (sprint.getProyecto() == null) {
+    if (e.getProyecto() == null) {
         model.addAttribute("errorMessage", "Debe seleccionar un proyecto para el sprint.");
         return "sprint/registrarSprint";
     }
 
-    sprintService.createSprint(sprint);
+    sprintService.createSprint(e);
     ra.addFlashAttribute("successMessage", "Sprint creado correctamente");
     return "redirect:/scrum/sprints/index";
 }
