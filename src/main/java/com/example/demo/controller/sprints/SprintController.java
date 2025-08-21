@@ -1,5 +1,6 @@
 package com.example.demo.controller.sprints;
 
+import java.util.Collection;
 import java.util.Optional;
 
 import javax.validation.Valid;
@@ -13,9 +14,11 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.example.demo.model.Sprint;
+import com.example.demo.service.proyecto.ProyectoService;
 import com.example.demo.service.sprint.SprintService;
 
 @Controller // This means that this class is a Controller
@@ -23,6 +26,9 @@ import com.example.demo.service.sprint.SprintService;
 public class SprintController {
   @Autowired
   private SprintService sprintService;
+  @Autowired
+  private ProyectoService proyectoService;
+
 
   @GetMapping("/index")
   public String showUserList(Model model) {
@@ -34,6 +40,7 @@ public class SprintController {
   public String registrar(Model model) {
     //Sprint n = new Sprint();
     model.addAttribute("sprint", new Sprint());
+    model.addAttribute("proyectos", proyectoService.getAll());
     return "sprint/registrarSprint";
   }
 
@@ -75,23 +82,48 @@ public class SprintController {
     return "sprint/modificarSprint";
 
   }
-// aqui me quedeeeeeeeeeeeeeeee
+
   
   @PostMapping("/actualizar/{id}") // PERSISTENTE
-  public String modificar(@PathVariable int id, @ModelAttribute("sprint") Sprint e, Model model) {
-	  sprintService.updateSprint(id, e);
-    return "redirect:/scrum/sprints/index";
+  public String modificar(@PathVariable Integer id, 
+		  @ModelAttribute("sprint") @Valid
+		  Sprint sprint, 
+		  Model model, 
+		  BindingResult bindingResult, 
+		  RedirectAttributes ra) {
+	  
+	  if (bindingResult.hasErrors()) {
+		  return "sprint/modificarSprint";
+	  }
+	  if(sprint.getFechaInicio() != null && sprint.getFechaFinal() != null
+			  && sprint.getFechaFinal().before(sprint.getFechaInicio())) {
+		  model.addAttribute("errorMessage", "La fecha inicial debe ser mayor o igual a la fecha inicia");
+		  return "sprint/modificarSprint";
+	  }
+	  sprintService.updateSprint(id, sprint);
+      ra.addFlashAttribute("successMessage", "Sprint actualizado correctamente");
+      return "redirect:/scrum/sprints/index";
+	  
   }
 
-  @GetMapping(path = "/eliminar/{id}")
-  public String eliminar(@PathVariable int id) {
-    Sprint e = sprintService.getSprint(id).get();
-    if (e == null) {
+  
+  @GetMapping("/eliminar/{id}")
+  public String eliminar(@PathVariable Integer id, RedirectAttributes ra) {
+      Optional<Sprint> opt = sprintService.getSprint(id);
+      if (opt.isEmpty()) {
+          ra.addFlashAttribute("errorMessage", "El sprint con id " + id + " no existe.");
+          return "redirect:/scrum/sprints/index";
+      }
+      sprintService.deleteSprint(id);
+      ra.addFlashAttribute("successMessage", "Sprint eliminado correctamente");
       return "redirect:/scrum/sprints/index";
-    } else {
-    	sprintService.deleteSprint(id);
-    	return "redirect:/scrum/sprints/index";
-    }
+  }
+
+  // --- Endpoint JSON para Vue: listar sprints por proyecto ---
+  @GetMapping("/api/by-proyecto/{proyectoId}")
+  @ResponseBody
+  public Collection<Sprint> getByProyecto(@PathVariable Integer proyectoId) {
+      return sprintService.getSprintsByProyecto(proyectoId);
   }
 
 }

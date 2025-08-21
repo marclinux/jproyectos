@@ -1,6 +1,7 @@
 package com.example.demo.service.proyecto;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
 
 import com.example.demo.model.Proyecto;
@@ -15,4 +16,6 @@ public interface ProyectoService {
     public abstract Collection<Proyecto> getProyectos();
 
     public abstract Optional<Proyecto> getProyecto(Integer id);
+    
+    public abstract List<Proyecto> getAll();
 }
