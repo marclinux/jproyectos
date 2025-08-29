@@ -23,6 +23,7 @@ public class Proyecto {
 
     
     // relacion con historias
+    
     @JsonManagedReference
     @OneToMany(
         mappedBy = "proyecto",

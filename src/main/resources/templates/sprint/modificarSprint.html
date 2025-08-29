@@ -9,20 +9,25 @@
 </head>
 
 <body class="bg-gray-100 text-gray-900">
-
-  <div class="max-w-3xl mx-auto px-4 py-8">
-    <h1 class="text-3xl font-bold mb-6 text-center">Actualización del Sprint</h1>
-
-    <form action="#" th:action="@{/scrum/sprints/actualizar/{id}(id=${sprint.id})}" th:object="${sprint}" method="post"
-      class="bg-white p-6 rounded-lg shadow-md space-y-6">
-
-      <div>
-        <label for="name" class="block text-sm font-medium">Nombre</label>
-        <input type="text" th:field="*{nombre}" id="name" placeholder="nombre"
-          class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500" />
-        <span th:if="${#fields.hasErrors('nombre')}" th:errors="*{nombre}"
-          class="text-red-600 text-sm mt-1 block"></span>
-      </div>
+	<div class="max-w-3xl mx-auto px-4 py-8">
+		<h1 class="text-3xl font-bold mb-6 text-center">Actualización del Sprint</h1>
+		<form action="#" th:action="@{/scrum/sprints/actualizar/{id}(id=${sprint.id})}" th:object="${sprint}" method="post"
+		class="bg-white p-6 rounded-lg shadow-md space-y-6">
+		
+		<div>
+			<label for="proyecto" class="block text-sm font-medium">Proyecto</label>
+			<select th:field="*{proyecto.id}" required class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500">
+				<option th:each="proyecto : ${proyectos}" th:value="${proyecto.id}" th:text="${proyecto.nombre}"></option>
+	  		</select>
+		</div>
+		
+		<div>
+        	<label for="name" class="block text-sm font-medium">Nombre</label>
+        	<input type="text" th:field="*{nombre}" id="name" placeholder="nombre"
+         	 	class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500" />
+       		<span th:if="${#fields.hasErrors('nombre')}" th:errors="*{nombre}"
+         		class="text-red-600 text-sm mt-1 block"></span>
+		</div>
 
       <div>
         <label for="descripcion" class="block text-sm font-medium">Descripción</label>

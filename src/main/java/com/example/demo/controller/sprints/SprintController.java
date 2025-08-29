@@ -33,6 +33,7 @@ public class SprintController {
   @GetMapping("/index")
   public String showUserList(Model model) {
     model.addAttribute("sprints", sprintService.getSprints());
+    model.addAttribute("proyectos",this.proyectoService.getProyectos());
     return "sprint/index";
   }
 
@@ -40,7 +41,7 @@ public class SprintController {
   public String registrar(Model model) {
     //Sprint n = new Sprint();
     model.addAttribute("sprint", new Sprint());
-    model.addAttribute("proyectos", proyectoService.getAll());
+    model.addAttribute("proyectos", this.proyectoService.getProyectos());
     return "sprint/registrarSprint";
   }
 
@@ -79,6 +80,7 @@ public class SprintController {
     }
     
 	  model.addAttribute("sprint", opt.get());
+	  model.addAttribute("proyectos",this.proyectoService.getProyectos());
     return "sprint/modificarSprint";
 
   }
