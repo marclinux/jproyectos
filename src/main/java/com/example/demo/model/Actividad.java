@@ -1,11 +1,14 @@
 package com.example.demo.model;
 
 import java.util.Date;
+import java.util.Objects;
+
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
@@ -38,11 +41,12 @@ public class Actividad {
     private String artefactos;
 
     @JsonBackReference
-    @ManyToOne(fetch = FetchType.EAGER)     
+    @ManyToOne(fetch = FetchType.EAGER, optional =  true) 
+    @JoinColumn(name = "historia_id", nullable = true)
     private Historia history;
     
     public Actividad(){
-        history=new Historia();
+       //history=new Historia();
     }      
 
     
@@ -56,7 +60,7 @@ public class Actividad {
         this.interrupcion = interrupcion;
         this.etapa = etapa;
         this.artefactos = artefactos;
-        history=new Historia();
+       
     }
 
 
@@ -156,15 +160,17 @@ public class Actividad {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Actividad )) return false;
-        return  history.getId()==((Actividad) o).getHistory().getId();
+        Actividad that = (Actividad) o;	
+        return Objects.equals(id, that.id);
+        
     }
  
     @Override
     public int hashCode() {
-        return getClass().hashCode();
+        return Objects.hash(id);
+               
     }
-
-
+    
     public Historia getHistory() {
         return history;
     }

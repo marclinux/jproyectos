@@ -2,6 +2,7 @@ package com.example.demo.model;
 
 import java.util.HashSet;
 import java.util.Set;
+import java.util.Objects;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -18,7 +19,7 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 @Table(name = "historias")
 public class Historia {
     @Id
-    private int id;
+    private Integer id;
     private String nombre;
     private String descripcion;
     private int peso;
@@ -71,11 +72,11 @@ public class Historia {
         this.estado = estado;
     }
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -120,12 +121,13 @@ public class Historia {
             return true;
         if (!(o instanceof Historia))
             return false;
-        return project.getId() == ((Historia) o).getProject().getId();
+        Historia that = (Historia) o;
+        return Objects.equals(id, that.id);
     }
 
     @Override
     public int hashCode() {
-        return getClass().hashCode();
+        return Objects.hash(id);
     }
 
     public Proyecto getProject() {

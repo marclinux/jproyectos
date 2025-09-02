@@ -57,7 +57,7 @@ public class HistoriaController {
   }
 
   @GetMapping("/modificar/{id}") // VISTA HTML
-  public String modificar(@PathVariable int id, Model model) {
+  public String modificar(@PathVariable Integer id, Model model) {
     model.addAttribute("historia", historiaService.getHistoria(id).get());
     model.addAttribute("proyectos",proyectoService.getProyectos());
     return "historia/modificarHistoria";
@@ -65,7 +65,7 @@ public class HistoriaController {
   }
 
   @PostMapping("/actualizar/{id}") // PERSISTENTE
-  public String modificar(@PathVariable int id, @ModelAttribute("historia") Historia e, Model model) {
+  public String modificar(@PathVariable Integer id, @ModelAttribute("historia") Historia e, Model model) {
     e.setProject(proyectoService.getProyecto(e.getProject().getId()).get());    
     
     historiaService.updateHistoria(id, e);
@@ -73,7 +73,7 @@ public class HistoriaController {
   }
 
   @GetMapping(path = "/eliminar/{id}")
-  public String eliminar(@PathVariable int id) {
+  public String eliminar(@PathVariable Integer id) {
     Historia e = historiaService.getHistoria(id).get();
     if (e == null) {
       return "redirect:/scrum/historias/index";
