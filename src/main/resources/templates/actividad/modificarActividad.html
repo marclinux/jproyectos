@@ -4,7 +4,7 @@
 <head>
   <meta charset="utf-8">
   <title>Actualizar Actividad</title>
-  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="/css/styles.css">
 </head>
 
 <body class="bg-gray-100 text-gray-800">
@@ -35,6 +35,7 @@
 		  <!-- Los errores seguirán mostrándose si es obligatorio en validación -->
 		  <span th:errors="*{history}" class="text-red-600 text-sm"></span>
 		</div>
+
 
       <div>
         <label for="descripcion" class="block text-sm font-medium mb-1">Descripción</label>
@@ -108,6 +109,7 @@
       </div>
     </form>
   </div>
+  <script type="module" th:src="@{/js/scripts.js}"></script>
 </body>
 
 </html>

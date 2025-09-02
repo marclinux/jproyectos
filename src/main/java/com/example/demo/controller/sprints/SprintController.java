@@ -1,5 +1,8 @@
 package com.example.demo.controller.sprints;
 
+import java.util.Collection;
+import java.util.Optional;
+
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,65 +14,137 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import com.example.demo.model.Proyecto;
 import com.example.demo.model.Sprint;
+import com.example.demo.service.proyecto.ProyectoService;
 import com.example.demo.service.sprint.SprintService;
 
 @Controller // This means that this class is a Controller
 @RequestMapping("/scrum/sprints") // This means URL's start with /Sprint (after Application path)
 public class SprintController {
   @Autowired
-  private SprintService SprintService;
+  private SprintService sprintService;
+  @Autowired
+  private ProyectoService proyectoService;
+
 
   @GetMapping("/index")
-  public String showUserList(Model model) {
-    model.addAttribute("sprints", SprintService.getSprints());
-    return "sprint/index";
+  public String showUserList(@RequestParam(value = "proyectoId", required = false) Integer proyectoId,
+                             Model model) {
+
+      Collection<Proyecto> proyectos = proyectoService.getProyectos();
+      Collection<Sprint> sprints;
+
+      // Usamos 0 o null para "Todos"
+      if (proyectoId == null || proyectoId == 0) {
+          sprints = sprintService.getSprints();
+      } else {
+          sprints = sprintService.getSprintsByProyecto(proyectoId);
+      }
+
+      model.addAttribute("proyectos", proyectos);
+      model.addAttribute("sprints", sprints);
+      // Guardamos 0 cuando es null para facilitar comparación en la vista
+      model.addAttribute("proyectoId", proyectoId == null ? 0 : proyectoId);
+
+      return "sprint/index"; // renderiza la vista con el modelo
   }
+
 
   @GetMapping("/registrar") // VISTA HMTL
   public String registrar(Model model) {
-    Sprint n = new Sprint();
-    model.addAttribute("sprint", n);
+    //Sprint n = new Sprint();
+    model.addAttribute("sprint", new Sprint());
+    model.addAttribute("proyectos", this.proyectoService.getProyectos());
     return "sprint/registrarSprint";
   }
 
   @PostMapping(path = "/registrar") // registro DAO
-  public String registrar(@ModelAttribute("sprint") @Valid Sprint e, BindingResult bindingResult,Model model) {
+  public String registrar(@ModelAttribute("sprint") @Valid Sprint e, BindingResult bindingResult,Model model,
+		  RedirectAttributes ra) {
     if (bindingResult.hasErrors()) {
       return "/sprint/registrarSprint";
-    } else {      
-      if(e.getFechaFinal().before(e.getFechaInicio())){
-        model.addAttribute("errorMessage","LA FECHA DEBE SER MAYOR A LA FECHA INICIAL");
-        return "/sprint/registrarSprint";
-      }
       
-      SprintService.createSprint(e);
-      return "redirect:/scrum/sprints/index";
     }
-  }
+    if (e.getFechaInicio() != null && e.getFechaFinal() != null
+            && e.getFechaFinal().before(e.getFechaInicio())) {
+        model.addAttribute("errorMessage", "La fecha final debe ser mayor o igual a la fecha inicial");
+        return "sprint/registrarSprint";
+    }
+
+    // IMPORTANTE: el sprint debe tener proyecto por la FK NOT NULL
+    if (e.getProyecto() == null) {
+        model.addAttribute("errorMessage", "Debe seleccionar un proyecto para el sprint.");
+        return "sprint/registrarSprint";
+    }
+
+    sprintService.createSprint(e);
+    ra.addFlashAttribute("successMessage", "Sprint creado correctamente");
+    return "redirect:/scrum/sprints/index";
+}
+    
+
 
   @GetMapping("/modificar/{id}") // VISTA HTML
-  public String modificar(@PathVariable int id, Model model) {
-    model.addAttribute("sprint", SprintService.getSprint(id).get());
+  public String modificar(@PathVariable Integer id, Model model, RedirectAttributes ra) {
+    Optional<Sprint> opt = sprintService.getSprint(id);
+    if(opt.isEmpty()) {
+    	ra.addFlashAttribute("errorMessage", "El sprint con id" + id + "no existe.");
+    	return "redirect:/scrum/sprints/index";
+    }
+    
+	  model.addAttribute("sprint", opt.get());
+	  model.addAttribute("proyectos",this.proyectoService.getProyectos());
     return "sprint/modificarSprint";
 
   }
 
+  
   @PostMapping("/actualizar/{id}") // PERSISTENTE
-  public String modificar(@PathVariable int id, @ModelAttribute("sprint") Sprint e, Model model) {
-    SprintService.updateSprint(id, e);
-    return "redirect:/scrum/sprints/index";
+  public String modificar(@PathVariable Integer id, 
+		  @ModelAttribute("sprint") @Valid
+		  Sprint sprint, 
+		  Model model, 
+		  BindingResult bindingResult, 
+		  RedirectAttributes ra) {
+	  
+	  if (bindingResult.hasErrors()) {
+		  return "sprint/modificarSprint";
+	  }
+	  if(sprint.getFechaInicio() != null && sprint.getFechaFinal() != null
+			  && sprint.getFechaFinal().before(sprint.getFechaInicio())) {
+		  model.addAttribute("errorMessage", "La fecha inicial debe ser mayor o igual a la fecha inicia");
+		  return "sprint/modificarSprint";
+	  }
+	  sprintService.updateSprint(id, sprint);
+      ra.addFlashAttribute("successMessage", "Sprint actualizado correctamente");
+      return "redirect:/scrum/sprints/index";
+	  
   }
 
-  @GetMapping(path = "/eliminar/{id}")
-  public String eliminar(@PathVariable int id) {
-    Sprint e = SprintService.getSprint(id).get();
-    if (e == null) {
+  
+  @GetMapping("/eliminar/{id}")
+  public String eliminar(@PathVariable Integer id, RedirectAttributes ra) {
+      Optional<Sprint> opt = sprintService.getSprint(id);
+      if (opt.isEmpty()) {
+          ra.addFlashAttribute("errorMessage", "El sprint con id " + id + " no existe.");
+          return "redirect:/scrum/sprints/index";
+      }
+      sprintService.deleteSprint(id);
+      ra.addFlashAttribute("successMessage", "Sprint eliminado correctamente");
       return "redirect:/scrum/sprints/index";
-    } else {
-      SprintService.deleteSprint(id);
-      return "redirect:/scrum/sprints/index";
-    }
   }
+
+  // --- Endpoint JSON para Vue: listar sprints por proyecto ---
+  @GetMapping("/api/by-proyecto/{proyectoId}")
+  @ResponseBody
+  public Collection<Sprint> getByProyecto(@PathVariable Integer proyectoId) {
+      return sprintService.getSprintsByProyecto(proyectoId);
+  }
+
 
 }

@@ -5,11 +5,12 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Listado de Actividades</title>
-  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <link rel="stylesheet" href="/css/styles.css">
 </head>
 
 <body class="bg-gray-50 text-gray-800">
-  <div class="max-w-7xl mx-auto px-4 py-8 text-center">
+	<div class="max-w-7xl mx-auto px-4 py-8 text-center">
 
     <!-- ENCABEZADO DE LA PAGINA -->
     <div th:replace="header :: header">...</div>
@@ -88,6 +89,7 @@
 		<div th:replace="footer :: copy">...</div>
 	</div>
 </div>
+<script type="module" th:src="@{/js/scripts.js}"></script>
 </body>
 </html>
 

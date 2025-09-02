@@ -1,6 +1,7 @@
 package com.example.demo.service.proyecto;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -37,5 +38,12 @@ public class ProyectoServiceImpl implements ProyectoService{
     @Override
     public Optional<Proyecto> getProyecto(Integer id) {
         return proyectoRepository.findById(id);
-    }    
+    }  
+    
+    @Override
+    public List<Proyecto> getAll() {
+        return proyectoRepository.findAll();
+    }
+    
+    
 }

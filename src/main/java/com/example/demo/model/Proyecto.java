@@ -21,14 +21,26 @@ public class Proyecto {
     private String nombre;
     private boolean estaActivo;
 
+    
+    // relacion con historias
+    
     @JsonManagedReference
     @OneToMany(
-        mappedBy = "project",
+        mappedBy = "proyecto",
         cascade = CascadeType.ALL,
         orphanRemoval = true,
         fetch = FetchType.EAGER
     )    
     private List<Historia> historias;
+    
+    // Relación con sprints
+    @OneToMany(
+        mappedBy = "proyecto",
+        cascade = CascadeType.ALL,
+        orphanRemoval = true,
+        fetch = FetchType.LAZY
+    )
+    private List<Sprint> sprints;
     
     
     public Proyecto() {
@@ -58,6 +70,20 @@ public class Proyecto {
     public void setEstaActivo(boolean estaActivo) {
         this.estaActivo = estaActivo;
     }
+    
+    public List<Historia> getHistorias() {
+        return historias;
+    }
+    public void setHistorias(List<Historia> historias) {
+        this.historias = historias;
+    }
+
+    public List<Sprint> getSprints() {
+        return sprints;
+    }
+    public void setSprints(List<Sprint> sprints) {
+        this.sprints = sprints;
+    }
 
     public void addHistoria(Historia historia){
         historias.add(historia);
@@ -67,6 +93,15 @@ public class Proyecto {
     public void removeHistoria(Historia historia){
         historias.remove(historia);        
         historia.setProject(null);
+    }
+    
+    public void addSprint(Sprint sprint){
+        sprints.add(sprint);
+        sprint.setProyecto(this);
+    }
+    public void removeSprint(Sprint sprint){
+        sprints.remove(sprint);
+        sprint.setProyecto(null);
     }
     
 }

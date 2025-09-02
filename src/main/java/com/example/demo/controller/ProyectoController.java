@@ -33,7 +33,7 @@ public class ProyectoController {
   }
 
   @PostMapping(path = "/addFrom") // Map ONLY POST Requests
-  public String addNewEmpleado(@ModelAttribute("proyecto") Proyecto e) {
+  public String addNewProyecto(@ModelAttribute("proyecto") Proyecto e) {
     proyectoService.createProyecto(e);
     return "redirect:/scrum/proyectos/index";
   }
@@ -75,7 +75,6 @@ public class ProyectoController {
 
   @GetMapping(path = "/all")
   public @ResponseBody Iterable<Proyecto> getAll() {
-    // This returns a JSON or XML with the users
     return proyectoService.getProyectos();
   }
 
