@@ -11,16 +11,30 @@
   <div class="max-w-3xl mx-auto mt-10 bg-white p-8 shadow-md rounded-lg">
     <form action="#" th:action="@{/scrum/actividades/actualizar/{id}(id=${actividad.id})}" th:object="${actividad}" method="post" class="space-y-6">
       
-      <div th:switch="${historias}">
-        <h2 th:case="null" class="text-xl font-semibold text-red-600">Debe registrar Historias</h2>
-        <div th:case="*">
-          <label for="historia" class="block text-sm font-medium text-gray-700 mb-1">Historia</label>
-          <select th:field="*{history.id}" id="historia" class="w-full border border-gray-300 rounded-md p-2 focus:ring-2 focus:ring-blue-500">
-            <option th:each="historia : ${historias}" th:value="${historia.id}" th:text="${historia.id}"></option>
-          </select>
-        </div>
-        <span th:errors="*{history}" class="text-sm text-red-600"></span>
-      </div>
+		<div th:switch="${historias}">
+		  <h2 th:case="null" class="text-red-600 font-semibold">
+		    No hay historias registradas (puedes dejar la actividad sin historia)
+		  </h2>
+
+		  <div th:case="*">
+		    <label for="historia" class="block mb-1 font-semibold text-gray-700">Historia</label>
+		    <select id="historia" th:field="*{history.id}"
+		      class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
+		      <!-- Opción vacía para indicar "sin historia" -->
+		      <option value="">-- Sin historia --</option>
+
+		      <!-- Lista de historias -->
+		      <option th:each="historia : ${historias}"
+		              th:value="${historia.id}"
+		             
+					  th:text="${historia.id != null ? historia.id : 'Historia ' + historia.id}">
+		      </option>
+		    </select>
+		  </div>
+		  
+		  <!-- Los errores seguirán mostrándose si es obligatorio en validación -->
+		  <span th:errors="*{history}" class="text-red-600 text-sm"></span>
+		</div>
 
       <div>
         <label for="descripcion" class="block text-sm font-medium mb-1">Descripción</label>

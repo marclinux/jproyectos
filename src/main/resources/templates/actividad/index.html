@@ -38,7 +38,7 @@
 						</thead>
             			<tbody class="divide-y divide-gray-100">
               				<tr th:each="actividad : ${actividades}" class="hover:bg-gray-50">
-				                <td class="px-4 py-2 text-center" th:text="${actividad.history}!=null? ${actividad.history.id}:''"></td>
+								<td class="px-4 py-2 text-center" th:text="${actividad.history != null ? actividad.history.id : ''}"></td>
 				                <td class="px-4 py-2 text-center" th:text="${actividad.descripcion}"></td>
 				                <td class="px-4 py-2 text-center" th:text="${#dates.format(actividad.fechaInicio, 'dd/MM/yyyy')}"></td>
 				                <td class="px-4 py-2 text-center" th:text="${actividad.horaInicio}"></td>
