@@ -5,7 +5,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Listado de Sprints</title>
-  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+  <link rel="stylesheet" href="/css/styles.css">
 </head>
 
 <body class="bg-gray-100 text-gray-800">
@@ -19,10 +19,14 @@
 		<div th:case="*">
 			<h2 class="text-3xl font-bold mt-8 mb-6 text-center">Lista de Sprints</h2>
 			<div>
-				<label for="proyecto" class="block text-sm font-medium">Sprints del Proyecto</label>
-				<select  class="mt-1 block w-full border-black-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500">
-					<option th:each="proyecto : ${proyectos}" th:value="${proyecto.id}" th:text="${proyecto.nombre}"></option>
-				</select>
+				<form method="get" th:action="@{/scrum/sprints/index}">
+					<label for="proyecto" class="block text-sm font-medium">Sprints del Proyecto</label>
+					<select name="proyectoId" onchange="this.form.submit()"  class="mt-1 block w-full border-black-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500">
+						<option th:value="0" th:selected="${proyectoId == 0}">-- Todos --</option>
+						<option th:each="proyecto : ${proyectos}" th:value="${proyecto.id}" th:text="${proyecto.nombre}"  th:selected="${proyecto.id == proyectoId}"></option>
+					</select>
+				</form>
+				
 				<br>
 			</div>
 			
@@ -81,6 +85,7 @@
     <div th:replace="footer :: copy" class="mt-10">...</div>
 
   </div>
+  <script type="module" th:src="@{/js/scripts.js}"></script>
 
 </body>
 

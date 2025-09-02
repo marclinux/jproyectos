@@ -14,9 +14,11 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.example.demo.model.Proyecto;
 import com.example.demo.model.Sprint;
 import com.example.demo.service.proyecto.ProyectoService;
 import com.example.demo.service.sprint.SprintService;
@@ -31,11 +33,27 @@ public class SprintController {
 
 
   @GetMapping("/index")
-  public String showUserList(Model model) {
-    model.addAttribute("sprints", sprintService.getSprints());
-    model.addAttribute("proyectos",this.proyectoService.getProyectos());
-    return "sprint/index";
+  public String showUserList(@RequestParam(value = "proyectoId", required = false) Integer proyectoId,
+                             Model model) {
+
+      Collection<Proyecto> proyectos = proyectoService.getProyectos();
+      Collection<Sprint> sprints;
+
+      // Usamos 0 o null para "Todos"
+      if (proyectoId == null || proyectoId == 0) {
+          sprints = sprintService.getSprints();
+      } else {
+          sprints = sprintService.getSprintsByProyecto(proyectoId);
+      }
+
+      model.addAttribute("proyectos", proyectos);
+      model.addAttribute("sprints", sprints);
+      // Guardamos 0 cuando es null para facilitar comparación en la vista
+      model.addAttribute("proyectoId", proyectoId == null ? 0 : proyectoId);
+
+      return "sprint/index"; // renderiza la vista con el modelo
   }
+
 
   @GetMapping("/registrar") // VISTA HMTL
   public String registrar(Model model) {
@@ -127,5 +145,6 @@ public class SprintController {
   public Collection<Sprint> getByProyecto(@PathVariable Integer proyectoId) {
       return sprintService.getSprintsByProyecto(proyectoId);
   }
+
 
 }

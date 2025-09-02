@@ -12,7 +12,7 @@
 <body class="bg-gray-100 min-h-screen text-black">
 
   <!-- NAVBAR -->
-  <nav class="bg-[#ADD8E6] px-4 py-2 w-full relative">
+ <nav class="bg-[#ADD8E6] px-10 py-10 w-full fixed top-0 left-0 z-50">
     <div class="max-w-7xl mx-auto flex items-center justify-between">
       <a th:href="@{/index}" class="font-bold text-xl">SCRUM CONTROL</a>
 
@@ -38,15 +38,11 @@
   </nav>
 
   <div class="relative min-h-screen flex items-center justify-center">
-    <!-- Fondo gris en la mitad inferior -->
-    <div class="absolute bottom-0 left-0 w-full h-1/2 bg-gray-200 z-0"></div>
-	 
 	<!-- Fondo naranja vertical a la izquierda -->
-	 <div class="absolute bottom-0 left-20 h-full w-[280px] bg-orange-400 z-10 animate-slide-left"></div>
-
+	<div class="absolute bottom-0 left-20 h-full w-[280px] bg-orange-400 z-10 animate-slide-left"></div>
 	
     <!-- Contenedor principal con imagen y texto -->
-    <div class="relative max-w-4xl w-full h-[500px] mt-16 z-10">
+    <div class="relative w-full h-[500px] mt-16 z-10 mx-auto">
       <!-- Imagen con animación desde la izquierda -->
       <img th:src="@{/icons/fondo.png}" alt="Fondo SCRUM"
            class="w-full h-full object-cover rounded-lg shadow-lg animate-slide-left" />
@@ -58,7 +54,14 @@
         </div>
       </div>
     </div>
+	
   </div>
+  
+  <!-- Fondo gris en la mitad inferior -->
+      <div class="absolute bottom-0 left-0 w-full h-1/2 bg-gray-200"></div>
+  	 
+  	
+
   
   <!-- Script para desplegar menú -->
   <script>
